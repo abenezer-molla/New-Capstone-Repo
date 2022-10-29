@@ -1,35 +1,48 @@
 import React from 'react';
-import { Box, Input, Center, Text, Button, PinInputField, PinInput, Stack, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, Textarea, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
+import { Box, Input, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, Textarea, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
+import { DatePicker } from 'chakra-ui-date-input';
 
 export default function InsertDataSurgery() {
   return (
-    <Box h="calc(190vh)" w="100%">
+    <Box h="calc(250vh)" w="100%">
       <Center w="50%" h="100%">
         <Box w="70%">
-          <Text fontSize="100xl" style={{ lineHeight: '160%' }} color="gray.600">
-            Tell us more about you.
+          <Text fontSize="6xl" mt={3} style={{ lineHeight: '200%', fontWeight: 'bolder' }}>
+            Doctor's Data
           </Text>
-          <Text mt={3}>
-            Tell us about yourself so we can match you with the best person to talk to.
+          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's First Name</Text>
+          <Input mt={3} mb={3} placeholder="write doctor's first name" />
+          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Doctor's Last Name</Text>
+          <Input mt={3} mb={3} placeholder="write doctors's last name" />
+          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>
+          <br />
+          <HStack>
+            <PinInput>
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+            </PinInput>
+          </HStack>
+          <br />
+          <br />
+
+          <Divider />
+          <Divider />
+          <Divider />
+          <br />
+          <br />
+
+          <Text fontSize="6xl" mt={3} style={{ lineHeight: '200%', fontWeight: 'bolder' }}>
+            Patient's Data
           </Text>
           <br />
-          <Text mt={3} fontSize="large" style={{ lineHeight: '110%', fontWeight: 'bolder' }} color="black.900">
-            I want to be a...
-          </Text>
 
-          <Stack direction="row" align="left" justifyContent="space-between" mt={1}>
-            <Button colorScheme="blue" variant="outline" size="lg" width={300}>
-              Talker
-            </Button>
-            <Button colorScheme="green" variant="solid" size="lg" width={300}>
-              Listner
-            </Button>
-          </Stack>
-          <br />
-
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> First Name</Text>
+          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Patient's First Name</Text>
           <Input mt={3} mb={3} placeholder="write patient's first name" />
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Last Name</Text>
+          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Patient's Last Name</Text>
           <Input mt={3} mb={3} placeholder="write patient's last name" />
           <Text style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Address</Text>
           <Input mt={3} placeholder="street adress, city, country" />
@@ -66,6 +79,9 @@ export default function InsertDataSurgery() {
               <PinInputField />
             </PinInput>
           </HStack>
+          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Date </Text>
+          <br />
+          <DatePicker placeholder="pick a date" position="relative" />
           <Text mt={5} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Report to the Selected Department</Text>
           <br />
           <FormControl as={SimpleGrid} columns={{ base: 2, lg: 2 }}>
@@ -73,7 +89,7 @@ export default function InsertDataSurgery() {
             <Switch id="isReadOnly" isReadOnly />
 
             <FormLabel htmlFor="isDisabled">Pediatric</FormLabel>
-            <Switch id="isReadOnly" isReadOnly />
+            <Switch id="isRequired" isRequired />
 
             <FormLabel htmlFor="isFocusable">Chronic Illness</FormLabel>
             <Switch id="isReadOnly" isReadOnly />
@@ -88,7 +104,7 @@ export default function InsertDataSurgery() {
             <Switch id="isReadOnly" isReadOnly />
 
             <FormLabel htmlFor="isRequired">Surgery</FormLabel>
-            <Switch id="isRequired" isRequired />
+            <Switch id="isReadOnly" isReadOnly />
 
             <FormLabel htmlFor="isRequired">Cancer</FormLabel>
             <Switch id="isReadOnly" isReadOnly />
