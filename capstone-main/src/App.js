@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
+import { Footer, ThemeSettings } from './components';
 import { HomePage, Recent, Calendar, Doctors, Patients, Kanban, Line, Editor } from './pages';
 import InsertDataPedi from './pages/InsertDataPedi';
 import InsertDataGyne from './pages/InsertDataGyne';

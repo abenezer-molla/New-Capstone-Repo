@@ -6,7 +6,7 @@ import { customersData, customersGrid } from '../data/dummy';
 import { Header, Navbar, Sidebar } from '../components';
 import { useStateContext } from '../contexts/ContextProvider';
 
-const Customers = () => {
+const Patients = () => {
   const selectionsettings = { persistSelection: true };
   const toolbarOptions = ['Delete'];
   const editing = { allowDeleting: true, allowEditing: true };
@@ -85,4 +85,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Patients;
