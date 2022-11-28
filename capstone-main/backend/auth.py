@@ -12,9 +12,19 @@ auth_ns = Namespace('auth', description="A namespace for Authentication")
 signup_model = auth_ns.model(
     'SignUp',
     {
+        "firstname": fields.String(),
+        "lastname": fields.String(),
         "username": fields.String(),
         "email": fields.String(),
-        "password": fields.String()
+        "address": fields.String(),
+        "password": fields.String(),
+        "level": fields.String(),
+        "password": fields.String(),
+        "gender": fields.String(),
+        "age": fields.Integer(),
+        "doctorID": fields.Integer(),
+        "hiredate": fields.Date(),
+        "department": fields.String(),
     }
 )
 
@@ -42,11 +52,18 @@ class SignUp(Resource):
         newUser = User(
             username=data.get('username'),
             email=data.get('email'),
+            firstname=data.get('firstname'),
+            lastname=data.get('lastname'),
+            address=data.get('address'),
+            level=data.get('level'),
+            gender=data.get('gender'),
+            age=data.get('age'),
+            department=data.get('department'),
+            doctorid=data.get('doctorid'),
             password=generate_password_hash(data.get('password'))
         )  # assigning the values from the UI input into the respective db values.
 
         newUser.save()
-
         return make_response(jsonify({"message": "User created/registered successfuly"}), 201)
 
 
