@@ -10,6 +10,7 @@ from flask import Flask, request, jsonify, make_response
 auth_ns = Namespace('auth', description="A namespace for Authentication")
 
 signup_model = auth_ns.model(
+
     'SignUp',
     {
         "firstname": fields.String(),
@@ -73,18 +74,17 @@ class Login(Resource):
     @auth_ns.expect(login_model)
     def post(self):
         data = request.get_json()
-
         username = data.get('username')
+        doctorid = data.get('doctorid')
         password = data.get('password')
-
         currentUser = User.query.filter_by(username=username).first()
+        currentId = User.query.filter_by(doctorid=doctorid).first()
 
         # checking the password given with the one that is hashed ans stored!
-        if currentUser and check_password_hash(currentUser.password, password):
+        if currentUser and currentId and check_password_hash(currentUser.password, password):
             # access will only be given once the password sotred and given matches
             access_token = create_access_token(identity=currentUser.username)
             refresh_token = create_refresh_token(identity=currentUser.username)
-
             return jsonify(
                 {"access_token": access_token, "refresh_token": refresh_token}
             )
