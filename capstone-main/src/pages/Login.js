@@ -41,26 +41,15 @@ export default function Login() {
           </Text>
           <Divider borderColor="red" />
           <br />
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's First Name</Text>
-          <Form.Group id="firstname">
+          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Username</Text>
+          <Form.Group id="username">
             <Input
               mt={3}
               mb={3}
-              placeholder="write doctor's first name"
-              name="firstname"
+              placeholder="write doctor's username"
+              name="username"
               // eslint-disable-next-line react/jsx-props-no-spreading
-              {...register('firstname', { required: true })}
-            />
-          </Form.Group>
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Last Name</Text>
-          <Form.Group id="lastname">
-            <Input
-              mt={3}
-              mb={3}
-              placeholder="write doctor's last name"
-              name="lastname"
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              {...register('lastname', { required: true })}
+              {...register('username', { required: true })}
             />
           </Form.Group>
           <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>

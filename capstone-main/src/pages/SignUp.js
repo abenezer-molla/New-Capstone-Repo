@@ -91,6 +91,20 @@ export default function SignUp() {
                 />
               </Form.Group>
               <br />
+              <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Username</Text>
+              <Form.Group id="username">
+                <Input
+                  type="username"
+                  name="username"
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...register('username', { required: true })}
+                  required
+                  mt={3}
+                  mb={3}
+                  placeholder="write doctor's username"
+                />
+              </Form.Group>
+              <br />
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Password</Text>
               <br />
               <Form.Group id="password">
@@ -239,7 +253,7 @@ export default function SignUp() {
                   columns={{ base: 2, lg: 2 }}
                   name="department"
                   // eslint-disable-next-line react/jsx-props-no-spreading
-                  {...register('department', { required: true })} 
+                  {...register('department', { required: true })}
                 >
                   <FormLabel htmlFor="isChecked">Emergency</FormLabel>
                   <Switch id="isRequired" isRequired />
