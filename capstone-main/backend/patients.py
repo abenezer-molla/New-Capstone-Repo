@@ -10,7 +10,6 @@ patients_ns = Namespace('patients', description="A namespace for Patients")
 patients_model = patients_ns.model(
     "Patient",
     {
-
         "patientid": fields.Integer(),
         "patientfirstname": fields.String(),
         "patientlastname": fields.String(),
@@ -55,11 +54,10 @@ class PatientsResource(Resource):
 
         new_patient = Patients(
 
-            patientid=data.get('patientid'),
+            id=data.get('id'),
             patientfirstname=data.get('patientfirstname'),
             patientlastname=data.get('patientlastname'),
             address=data.get('address'),
-            level=data.get('level'),
             gender=data.get('gender'),
             age=data.get('age'),
             department=data.get('department'),

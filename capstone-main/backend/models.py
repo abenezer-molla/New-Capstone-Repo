@@ -54,7 +54,6 @@ class User(db.Model):
     gender = db.Column(db.String(80), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     department = db.Column(db.String(80), nullable=False)
-    hiredate = db.Column(db.Date(), nullable=True)
     password = db.Column(db.Text(), nullable=False)
 
     def __repr__(self):

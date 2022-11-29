@@ -61,7 +61,6 @@ class SignUp(Resource):
             age=data.get('age'),
             department=data.get('department'),
             doctorid=data.get('doctorid'),
-            hiredate=data.get('hiredate'),
             password=generate_password_hash(data.get('password'))
         )  # assigning the values from the UI input into the respective db values.
 
@@ -79,10 +78,9 @@ class Login(Resource):
         doctorid = data.get('doctorid')
         password = data.get('password')
         currentUser = User.query.filter_by(username=username).first()
-        currentId = User.query.filter_by(doctorid=doctorid).first()
 
         # checking the password given with the one that is hashed ans stored!
-        if currentUser and currentId and check_password_hash(currentUser.password, password):
+        if currentUser and check_password_hash(currentUser.password, password):
             # access will only be given once the password sorted and given matches
             access_token = create_access_token(identity=currentUser.username)
             refresh_token = create_refresh_token(identity=currentUser.username)
