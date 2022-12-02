@@ -1,8 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Form } from 'react-bootstrap';
-import { Box, InputGroup, Input, InputRightElement, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
+import { Form, InputGroup } from 'react-bootstrap';
+import { Box, InputRightElement, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { login } from '../auth';
 
 export default function Login() {
   const [show, setShow] = React.useState(false);
@@ -43,56 +44,40 @@ export default function Login() {
           <br />
           <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Username</Text>
           <Form.Group id="username">
-            <Input
+            <Form.Control
+              type="username"
+              name="username"
+              {...register('username', { required: true })}
+              required
               mt={3}
               mb={3}
-              placeholder="write doctor's username"
-              name="username"
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              {...register('username', { required: true })}
+              placeholder="enter your username"
             />
           </Form.Group>
           <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>
           <br />
-          <Form.Group id="pininput">
-            <HStack>
-              <PinInput
-                name="pininput"
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('pininput', { required: true })}
-              >
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-              </PinInput>
-            </HStack>
-          </Form.Group>
           <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Password</Text>
           <br />
+
           <Form.Group id="password">
             <InputGroup size="md">
-              <Input
+              <Form.Control
                 pr="4.5rem"
                 type={show ? 'text' : 'password'}
                 placeholder="Enter password"
                 name="password"
-                // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('password', { required: true })}
+                required
               />
-              <InputRightElement width="4.5rem">
-                <Button h="1.75rem" size="sm" onClick={handleClick}>
-                  {show ? 'Hide' : 'Show'}
-                </Button>
-              </InputRightElement>
             </InputGroup>
           </Form.Group>
+
           <br />
-          <Button mt={7} w="100%" colorScheme="blue">
-            SUBMIT
-          </Button>
+          <Form.Group>
+            <Button onClick={handleSubmit(userLogin)} mt={7} w="100%" colorScheme="blue">
+              SUBMIT
+            </Button>
+          </Form.Group>
           <br />
           <br />
           <br />
@@ -104,7 +89,7 @@ export default function Login() {
               to="/signup"
               key="signup"
             >
-              <Button onClick={handleSubmit(userLogin)} mt={4} w="100%" colorScheme="blue">
+              <Button mt={4} w="100%" colorScheme="blue">
                 SIGN UP
               </Button>
             </NavLink>

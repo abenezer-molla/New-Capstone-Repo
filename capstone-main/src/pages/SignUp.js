@@ -1,23 +1,49 @@
-import React, { useState } from 'react';
-import { Box, InputGroup, InputRightElement, Input, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
-import { DatePicker } from 'chakra-ui-date-input';
+import React, { useState, useEffect } from 'react';
+import { Box, InputGroup, InputRightElement, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
 import { Form, Alert } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 
+// eslint-disable-next-line no-lone-blocks
+{ /* import { DatePicker } from 'chakra-ui-date-input'; */ }
+
 export default function SignUp() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, watch, handleSubmit, reset, formState: { errors } } = useForm();
   const [serverResponse, setServerResponse] = useState('');
 
+  useEffect(() => {
+    fetch('/patients/patients')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        { /*  setMessage(data.patientfirstname);  */ }
+      })
+      .catch(err => console.log(err));
+    }, []);
+
+  const [message, setMessage] = useState('');
+
   const submitForm = (data) => {
+    console.log(data);
     if (data.password === data.confirmpassword) {
       const body = {
+        firstname: data.firstname,
+        lastname: data.lastname,
         username: data.username,
         email: data.email,
+        address: data.address,
         password: data.password,
+        level: data.level,
+        gender: data.gender,
+        age: data.age,
+        doctorID: data.doctorid,
+        department: data.department,
+
       };
+
+      console.log(watch('username'));
 
       const requestOptions = {
         method: 'POST',
@@ -55,7 +81,10 @@ export default function SignUp() {
         </p>
       </Alert>
       <Box h="calc(200vh)" w="100%">
-        <Form>
+        <div>
+          <h1>{message}</h1>
+        </div>
+        <form>
           <Center w="50%" h="100%">
             <Box w="70%">
               <Text fontSize="6xl" mt={3} style={{ lineHeight: '200%', fontWeight: 'bolder' }}>
@@ -66,7 +95,7 @@ export default function SignUp() {
 
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's First Name</Text>
               <Form.Group id="firstname">
-                <Input
+                <Form.Control
                   type="firstname"
                   name="firstname"
                   // eslint-disable-next-line react/jsx-props-no-spreading
@@ -79,7 +108,7 @@ export default function SignUp() {
               </Form.Group>
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Last Name</Text>
               <Form.Group id="lastname">
-                <Input
+                <Form.Control
                   type="lastname"
                   name="lastname"
                   // eslint-disable-next-line react/jsx-props-no-spreading
@@ -93,7 +122,7 @@ export default function SignUp() {
               <br />
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Username</Text>
               <Form.Group id="username">
-                <Input
+                <Form.Control
                   type="username"
                   name="username"
                   // eslint-disable-next-line react/jsx-props-no-spreading
@@ -103,18 +132,32 @@ export default function SignUp() {
                   mb={3}
                   placeholder="write doctor's username"
                 />
+                {errors.username && <small style={{ color: 'red' }}>Username is required</small>}
+              </Form.Group>
+              <br />
+              <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Email</Text>
+              <Form.Group id="email">
+                <Form.Control
+                  type="email"
+                  name="email"
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...register('email', { required: true })}
+                  required
+                  mt={3}
+                  mb={3}
+                  placeholder="write doctor's email"
+                />
               </Form.Group>
               <br />
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Password</Text>
               <br />
               <Form.Group id="password">
                 <InputGroup size="md">
-                  <Input
+                  <Form.Control
                     pr="4.5rem"
                     type={show ? 'text' : 'password'}
                     placeholder="Enter password"
                     name="password"
-                    // eslint-disable-next-line react/jsx-props-no-spreading
                     {...register('password', { required: true })}
                     required
                   />
@@ -131,12 +174,11 @@ export default function SignUp() {
               <br />
               <Form.Group id="confirmpassword">
                 <InputGroup size="md">
-                  <Input
+                  <Form.Control
                     pr="4.5rem"
                     type={show ? 'text' : 'password'}
                     placeholder="Confirm Password"
                     name="confirmpassword"
-                    // eslint-disable-next-line react/jsx-props-no-spreading
                     {...register('confirmpassword', { required: true })}
                     required
                   />
@@ -151,10 +193,9 @@ export default function SignUp() {
               <br />
               <Text style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Address</Text>
               <Form.Group id="address">
-                <Input
+                <Form.Control
                   type="address"
                   name="address"
-                  // eslint-disable-next-line react/jsx-props-no-spreading
                   {...register('address', { required: true })}
                   required
                   mt={3}
@@ -163,79 +204,57 @@ export default function SignUp() {
                 />
               </Form.Group>
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Level</Text>
-              <Form.Group id="status">
-                <Select
-                  placeholder="Select Status"
-                  mt={3}
-                  name="status"
-                  // eslint-disable-next-line react/jsx-props-no-spreading
-                  {...register('status', { required: true })}
+              <Form.Group id="level">
+                <Form.Control
+                  type="level"
+                  name="level"
+                  {...register('level', { required: true })}
                   required
-                >
-                  <option value="option3">Resident</option>
-                  <option value="option1">Chief resident</option>
-                  <option value="option1">Fellow</option>
-                  <option value="option1">Attending physician</option>
-                  <option value="option1">Department head</option>
-                  <option value="option1">Medical director</option>
-                </Select>
+                  mt={3}
+                  mb={3}
+                  placeholder="Eg: Resident, Attending physician, Department head, Medical director"
+                />
               </Form.Group>
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Gender</Text>
-              <Form.Group id="status">
-                <Select
-                  placeholder="Select Gender"
-                  mt={3}
-                  name="status"
-                  // eslint-disable-next-line react/jsx-props-no-spreading
-                  {...register('status', { required: true })}
+              <Form.Group id="gender">
+                <Form.Control
+                  type="gender"
+                  name="gender"
+                  {...register('gender', { required: true })}
                   required
-                >
-                  <option value="option3">Male</option>
-                  <option value="option1">Female</option>
-                  <option value="option2">Other</option>
-
-                </Select>
+                  mt={3}
+                  mb={3}
+                  placeholder="Male, Female, Other..."
+                />
               </Form.Group>
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Age </Text>
               <br />
               <Form.Group id="age">
-                <NumberInput
-                  defaultValue={0}
-                  min={0}
-                  clampValueOnBlur={false}
+                <Form.Control
+                  type="age"
                   name="age"
-                  // eslint-disable-next-line react/jsx-props-no-spreading
                   {...register('age', { required: true })}
                   required
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
+                  mt={3}
+                  mb={3}
+                  placeholder="age in numbers"
+                />
               </Form.Group>
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>
               <br />
-              <Form.Group id="age">
-                <HStack>
-                  <PinInput
-                    name="pininput"
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...register('pininput', { required: true })}
-                    required
-                  >
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                  </PinInput>
-                </HStack>
+              <Form.Group id="doctorid">
+                <Form.Control
+                  type="doctorid"
+                  name="doctorid"
+                  {...register('doctorid', { required: true })}
+                  required
+                  mt={3}
+                  mb={3}
+                  placeholder="enter your id"
+                />
               </Form.Group>
-              <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Hire Date </Text>
               <br />
+              {/*
               <Form.Group id="datepicker">
                 <DatePicker
                   placeholder="pick a date"
@@ -245,44 +264,26 @@ export default function SignUp() {
                   {...register('datepicker', { required: true })}
                 />
               </Form.Group>
+              */}
+
               <Text mt={5} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Department the Doctor is Working Under</Text>
               <br />
               <Form.Group id="department">
-                <FormControl
-                  as={SimpleGrid}
-                  columns={{ base: 2, lg: 2 }}
+                <Form.Control
+                  type="department"
                   name="department"
-                  // eslint-disable-next-line react/jsx-props-no-spreading
                   {...register('department', { required: true })}
-                >
-                  <FormLabel htmlFor="isChecked">Emergency</FormLabel>
-                  <Switch id="isRequired" isRequired />
-
-                  <FormLabel htmlFor="isDisabled">Pediatric</FormLabel>
-                  <Switch id="isRequired" isRequired />
-
-                  <FormLabel htmlFor="isFocusable">Chronic Illness</FormLabel>
-                  <Switch id="isRequired" isRequired />
-
-                  <FormLabel htmlFor="isInvalid">Internal Medicine</FormLabel>
-                  <Switch id="isRequired" isRequired />
-
-                  <FormLabel htmlFor="isReadOnly">Obstetrics and Gynecology</FormLabel>
-                  <Switch id="isRequired" isRequired />
-
-                  <FormLabel htmlFor="isRequired">Infectious Deseases</FormLabel>
-                  <Switch id="isRequired" isRequired />
-
-                  <FormLabel htmlFor="isRequired">Surgery</FormLabel>
-                  <Switch id="isRequired" isRequired />
-
-                  <FormLabel htmlFor="isRequired">Cancer</FormLabel>
-                  <Switch id="isRequired" isRequired />
-                </FormControl>
+                  required
+                  mt={3}
+                  mb={3}
+                  placeholder="enter your department"
+                />
               </Form.Group>
-              <Button onClick={handleSubmit(submitForm)} mt={7} w="100%" colorScheme="blue">
-                SUBMIT
-              </Button>
+              <Form.Group>
+                <Button onClick={handleSubmit(submitForm)} mt={7} w="100%" colorScheme="blue">
+                  SUBMIT
+                </Button>
+              </Form.Group>
               <br />
               <br />
               <br />
@@ -304,7 +305,7 @@ export default function SignUp() {
               <Divider borderColor="red" />
             </Box>
           </Center>
-        </Form>
+        </form>
       </Box>
     </>
   );
