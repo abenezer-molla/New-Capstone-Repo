@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
+import React, { useEffect, useState } from 'react';
+import { GridComponent, ColumnsDirective, ColumnDirective, Page, PdfExport, ExcelExport, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { FiSettings } from 'react-icons/fi';
 import { customersData, customersGrid } from '../data/dummy';
@@ -9,6 +9,7 @@ import { useStateContext } from '../contexts/ContextProvider';
 const Patients = () => {
   const selectionsettings = { persistSelection: true };
   const toolbarOptions = ['Delete'];
+  const [patients, setPatients] = useState();
   const editing = { allowDeleting: true, allowEditing: true };
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
   useEffect(() => {
@@ -18,6 +19,16 @@ const Patients = () => {
       setCurrentColor(currentThemeColor);
       setCurrentMode(currentThemeMode);
     }
+  }, []);
+
+  useEffect(() => {
+    fetch('/patients/patients')
+      .then((res) => res.json())
+      .then((data) => {
+        setPatients(data);
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -63,20 +74,21 @@ const Patients = () => {
           <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
             <Header category="Page" title="Patients" />
             <GridComponent
-              dataSource={customersData}
+              dataSource={patients}
               enableHover={false}
               allowPaging
               pageSettings={{ pageCount: 5 }}
               selectionSettings={selectionsettings}
               toolbar={toolbarOptions}
               editSettings={editing}
+              allowExcelExport
+              allowPdfExport
               allowSorting
             >
               <ColumnsDirective>
-                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                 {customersGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
               </ColumnsDirective>
-              <Inject services={[Page, Selection, Toolbar, Edit, Sort, Filter]} />
+              <Inject services={[Page, Selection, Toolbar, ExcelExport, PdfExport, Edit, Sort, Filter]} />
             </GridComponent>
           </div>
         </div>

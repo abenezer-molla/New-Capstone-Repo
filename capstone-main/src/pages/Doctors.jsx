@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GridComponent, Inject, ColumnsDirective, ColumnDirective, Search, Page } from '@syncfusion/ej2-react-grids';
 
 import { FiSettings } from 'react-icons/fi';
@@ -9,7 +9,7 @@ import { useStateContext } from '../contexts/ContextProvider';
 
 const Doctors = () => {
   const toolbarOptions = ['Search'];
-
+  const [doctors, setDoctors] = useState();
   const editing = { allowDeleting: true, allowEditing: true };
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
   useEffect(() => {
@@ -19,6 +19,16 @@ const Doctors = () => {
       setCurrentColor(currentThemeColor);
       setCurrentMode(currentThemeMode);
     }
+  }, []);
+
+  useEffect(() => {
+    fetch('/auth/doctors')
+      .then((res) => res.json())
+      .then((data) => {
+        setDoctors(data);
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -64,7 +74,7 @@ const Doctors = () => {
           <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
             <Header category="Page" title="Physicians" />
             <GridComponent
-              dataSource={employeesData}
+              dataSource={doctors}
               width="auto"
               allowPaging
               allowSorting

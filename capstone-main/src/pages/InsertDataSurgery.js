@@ -1,129 +1,253 @@
-import React from 'react';
-import { Box, Input, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, Textarea, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
-import { DatePicker } from 'chakra-ui-date-input';
+import React, { useState, useEffect } from 'react';
+import { Box, Input, Center, Divider, Text, Button, PinInputField, PinInput, Stack, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, Textarea, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
+import { Form, Alert } from 'react-bootstrap';
 
 export default function InsertDataSurgery() {
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
+  const { register, watch, handleSubmit, reset, formState: { errors } } = useForm();
+  const [serverResponse, setServerResponse] = useState('');
+
+  const submitForm = (data) => {
+    console.log(data);
+    const body = {
+      patientid: data.patientid,
+      patientfirstname: data.patientfirstname,
+      patientlastname: data.patientlastname,
+      address: data.address,
+      gender: data.gender,
+      medicalnote: data.medicalnote,
+      age: data.age,
+      department: data.department,
+      status: data.status,
+      diagnosisstatus: data.diagnosisstatus,
+      doctorfirstname: data.doctorfirstname,
+      doctorlastname: data.doctorlastname,
+      doctorid: data.doctorid,
+    };
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    };
+
+    fetch('/patients/patients', requestOptions)
+      .then((res) => res.json())
+      // eslint-disable-next-line no-shadow
+      .then((data) => {
+        setServerResponse(data.patientfirstname);
+        setShow(true);
+      })
+      .catch((err) => console.log(err));
+
+    reset();
+  };
+
   return (
-    <Box h="calc(250vh)" w="100%">
-      <Center w="50%" h="100%">
-        <Box w="70%">
-          <Text fontSize="6xl" mt={3} style={{ lineHeight: '200%', fontWeight: 'bolder' }}>
-            Doctor's Data
-          </Text>
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's First Name</Text>
-          <Input mt={3} mb={3} placeholder="write doctor's first name" />
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Doctor's Last Name</Text>
-          <Input mt={3} mb={3} placeholder="write doctors's last name" />
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>
-          <br />
-          <HStack>
-            <PinInput>
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-            </PinInput>
-          </HStack>
-          <br />
-          <br />
+    <>
+      <Alert
+        variant="success"
+        onClose={() => {
+          setShow(false);
+        }}
+        dismissible
+      >
+        <p>
+          {serverResponse}
+        </p>
+      </Alert>
+      <Box h="calc(250vh)" w="100%">
+        <Center w="50%" h="100%">
+          <Box w="70%">
+            <Text fontSize="6xl" mt={3} style={{ lineHeight: '200%', fontWeight: 'bolder' }}>
+              Doctor's Data
+            </Text>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's First Name</Text>
+            <Form.Group id="doctorfirstname">
+              <Input
+                type="doctorfirstname"
+                name="doctorfirstname"
+                {...register('doctorfirstname', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="enter doctor's firstname"
+              />
+            </Form.Group>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Last Name</Text>
+            <Form.Group id="doctorlastname">
+              <Input
+                type="doctorlastname"
+                name="doctorlastname"
+                {...register('doctorlastname', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="enter doctor's lastname"
+              />
+            </Form.Group>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>
+            <Form.Group id="doctorid">
+              <Input
+                type="doctorid"
+                name="doctorid"
+                {...register('doctorid', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="enter doctor's id"
+              />
+            </Form.Group>
+            <br />
+            <Divider />
+            <Divider />
+            <Divider />
+            <br />
+            <br />
 
-          <Divider />
-          <Divider />
-          <Divider />
-          <br />
-          <br />
+            <Text fontSize="6xl" mt={3} style={{ lineHeight: '200%', fontWeight: 'bolder' }}>
+              Patient's Data
+            </Text>
+            <br />
 
-          <Text fontSize="6xl" mt={3} style={{ lineHeight: '200%', fontWeight: 'bolder' }}>
-            Patient's Data
-          </Text>
-          <br />
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Patient's First Name</Text>
+            <Form.Group id="patientfirstname">
+              <Input
+                type="patientfirstname"
+                name="patientfirstname"
+                {...register('patientfirstname', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="enter patient's firstname"
+              />
+            </Form.Group>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Patient's Last Name</Text>
+            <Form.Group id="patientlastname">
+              <Input
+                type="patientlastname"
+                name="patientlastname"
+                {...register('patientlastname', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="enter patient's lastname"
+              />
+            </Form.Group>
+            <Text style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Address</Text>
+            <Form.Group id="address">
+              <Input
+                type="address"
+                name="address"
+                {...register('address', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="enter patient's address"
+              />
+            </Form.Group>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Status</Text>
+            <Form.Group id="status">
+              <Input
+                type="status"
+                name="status"
+                {...register('status', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="put ACTIVE or DECEASED"
+              />
+            </Form.Group>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Gender</Text>
+            <Form.Group id="gender">
+              <Input
+                type="gender"
+                name="gender"
+                {...register('gender', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="enter patient's gender"
+              />
+            </Form.Group>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Age </Text>
+            <Form.Group id="age">
+              <Input
+                type="age"
+                name="age"
+                {...register('age', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="enter patient's age"
+              />
+            </Form.Group>
 
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Patient's First Name</Text>
-          <Input mt={3} mb={3} placeholder="write patient's first name" />
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Patient's Last Name</Text>
-          <Input mt={3} mb={3} placeholder="write patient's last name" />
-          <Text style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Address</Text>
-          <Input mt={3} placeholder="street adress, city, country" />
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Status</Text>
-          <Select placeholder="Select Status" mt={3}>
-            <option value="option3">Active</option>
-            <option value="option1">Passed Away</option>
-          </Select>
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Gender</Text>
-          <Select placeholder="Select Gender" mt={3}>
-            <option value="option3">Male</option>
-            <option value="option1">Female</option>
-            <option value="option2">Other</option>
-
-          </Select>
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Age </Text>
-          <br />
-          <NumberInput defaultValue={0} min={0} clampValueOnBlur={false}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Patient's ID </Text>
-          <br />
-          <HStack>
-            <PinInput>
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-            </PinInput>
-          </HStack>
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Date </Text>
-          <br />
-          <DatePicker placeholder="pick a date" position="relative" />
-          <Text mt={5} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Report to the Selected Department</Text>
-          <br />
-          <FormControl as={SimpleGrid} columns={{ base: 2, lg: 2 }}>
-            <FormLabel htmlFor="isChecked">Emergency</FormLabel>
-            <Switch id="isReadOnly" isReadOnly />
-
-            <FormLabel htmlFor="isDisabled">Pediatric</FormLabel>
-            <Switch id="isRequired" isRequired />
-
-            <FormLabel htmlFor="isFocusable">Chronic Illness</FormLabel>
-            <Switch id="isReadOnly" isReadOnly />
-
-            <FormLabel htmlFor="isInvalid">Internal Medicine</FormLabel>
-            <Switch id="isReadOnly" isReadOnly />
-
-            <FormLabel htmlFor="isReadOnly">Obstetrics and Gynecology</FormLabel>
-            <Switch id="isReadOnly" isReadOnly />
-
-            <FormLabel htmlFor="isRequired">Infectious Deseases</FormLabel>
-            <Switch id="isReadOnly" isReadOnly />
-
-            <FormLabel htmlFor="isRequired">Surgery</FormLabel>
-            <Switch id="isReadOnly" isReadOnly />
-
-            <FormLabel htmlFor="isRequired">Cancer</FormLabel>
-            <Switch id="isReadOnly" isReadOnly />
-          </FormControl>
-
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Detailed Medical Note about the Patient</Text>
-          <br />
-          <Textarea placeholder="Write a detailed medical note about the patient. You can use the editor to compose your note and paste it here once done." />
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Diagnosis and/or Medical Note Status</Text>
-          <Select placeholder="Select Status" mt={3}>
-            <option value="option3">Complete</option>
-            <option value="option1">Pending</option>
-          </Select>
-          <Button mt={7} w="100%" colorScheme="blue">
-            SUBMIT
-          </Button>
-          <br />
-        </Box>
-      </Center>
-    </Box>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Patient's ID </Text>
+            <br />
+            <Form.Group id="patientid">
+              <Input
+                type="patientid"
+                name="patientid"
+                {...register('patientid', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="enter patient's ID"
+              />
+            </Form.Group>
+            <br />
+            <Text mt={5} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Report to the Selected Department</Text>
+            <br />
+            <Form.Group id="department">
+              <Input
+                type="department"
+                name="department"
+                {...register('department', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="Examples are: Surgery, Pediatrics, Oncology, Internal Medicine, Infectious Diseases, Gynicology, Chronic Illness"
+              />
+            </Form.Group>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Detailed Medical Note about the Patient</Text>
+            <br />
+            <Form.Group id="medicalnote">
+              <Textarea
+                type="medicalnote"
+                name="medicalnote"
+                {...register('medicalnote', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="Write a detailed medical note about the patient."
+              />
+            </Form.Group>
+            <br />
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Diagnosis and/or Medical Note Status</Text>
+            <Form.Group id="diagnosisstatus">
+              <Input
+                type="diagnosisstatus"
+                name="diagnosisstatus"
+                {...register('diagnosisstatus', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="Put either COMPLETE or PENDING"
+              />
+            </Form.Group>
+            <Form.Group>
+              <Button onClick={handleSubmit(submitForm)} mt={7} w="100%" colorScheme="blue">
+                SUBMIT
+              </Button>
+            </Form.Group>
+            <br />
+          </Box>
+        </Center>
+      </Box>
+    </>
   );
 }

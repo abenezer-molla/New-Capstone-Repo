@@ -26,6 +26,24 @@ signup_model = auth_ns.model(
     }
 )
 
+doctors_model = auth_ns.model(
+
+    'Doctors',
+    {
+        "firstname": fields.String(),
+        "lastname": fields.String(),
+        "username": fields.String(),
+        "email": fields.String(),
+        "address": fields.String(),
+        "password": fields.String(),
+        "level": fields.String(),
+        "gender": fields.String(),
+        "age": fields.Integer(),
+        "department": fields.String(),
+        "doctorid": fields.Integer(),
+    }
+)
+
 login_model = auth_ns.model(
     'Login',
     {
@@ -35,8 +53,17 @@ login_model = auth_ns.model(
 )
 
 
-@auth_ns.route('/signup')
+@auth_ns.route('/doctors')
 class SignUp(Resource):
+
+    @auth_ns.marshal_list_with(doctors_model)
+    def get(self):
+        """Get all doctors """
+
+        doctors = User.query.all()
+
+        return doctors
+
     @auth_ns.expect(signup_model)
     def post(self):
         data = request.get_json()

@@ -57,14 +57,15 @@ export const kanbanGrid = [
     keyField: 'Close',
     allowToggle: true },
 ];
-const gridEmployeeProfile = (props) => (
+const gridDoctorFirstName = (props) => (
   <div className="flex items-center gap-2">
-    <img
-      className="rounded-full w-10 h-10"
-      src={props.EmployeeImage}
-      alt="employee"
-    />
-    <p>{props.Name}</p>
+    <p>{props.firstname}</p>
+  </div>
+);
+
+const gridDoctorLastName = (props) => (
+  <div className="flex items-center gap-2">
+    <p>{props.lastname}</p>
   </div>
 );
 const gridEmployeeProfile2 = (props) => (
@@ -73,9 +74,9 @@ const gridEmployeeProfile2 = (props) => (
   </div>
 );
 
-const gridEmployeeCountry = (props) => (
+const gridDoctorLevel = (props) => (
   <div className="flex items-center justify-center gap-2">
-    <span>{props.Country}</span>
+    <span>{props.level}</span>
   </div>
 );
 export const EditorData = () => (
@@ -88,15 +89,74 @@ export const EditorData = () => (
     </h3>
   </div>
 );
-const customerGridImage = (props) => (
+const patientGridID = (props) => (
   <div className="image flex gap-4">
-    <img
-      className="rounded-full w-10 h-10"
-      src={props.CustomerImage}
-      alt="employee"
-    />
     <div>
-      <p>{props.CustomerName}</p>
+      <p>{props.patientid}</p>
+    </div>
+  </div>
+);
+
+const patientGridFirstName = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.patientfirstname}</p>
+    </div>
+  </div>
+);
+
+const patientGridLastName = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.patientlastname}</p>
+    </div>
+  </div>
+);
+
+const patientGridGender = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.gender}</p>
+    </div>
+  </div>
+);
+
+const patientGridAge = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.age}</p>
+    </div>
+  </div>
+);
+
+const patientGridDepartment = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.department}</p>
+    </div>
+  </div>
+);
+
+const patientGridStatus = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.status}</p>
+    </div>
+  </div>
+);
+
+const patientGridMedicalNote = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.medicalnote}</p>
+    </div>
+  </div>
+);
+
+const patientGridDiagnosisStatus = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.diagnosisstatus}</p>
     </div>
   </div>
 );
@@ -368,91 +428,138 @@ export const LinePrimaryYAxis = {
 
 export const customersGrid = [
   { type: 'checkbox', width: '50' },
-  { headerText: 'First Name',
+  { field: 'patientid',
+    headerText: 'Patient ID',
     width: '150',
-    template: customerGridImage,
-    textAlign: 'Center' },
-
-  { headerText: ' Last Name',
+    template: patientGridID,
+    textAlign: 'Left' },
+  { field: 'patientfirstname',
+    headerText: 'First Name',
     width: '150',
-    template: customerGridImage2,
-    textAlign: 'Center' },
+    template: patientGridFirstName,
+    textAlign: 'Left' },
 
-  { field: 'ProjectName',
+  { field: 'patientlastname',
+    headerText: ' Last Name',
+    width: '150',
+    template: patientGridLastName,
+    textAlign: 'Left' },
+
+  { field: 'address',
+    headerText: 'Address',
+    width: '150',
+    textAlign: 'Left' },
+  { field: 'gender',
+    headerText: 'Gender',
+    width: '130',
+    format: 'yMd',
+    textAlign: 'Left',
+    template: patientGridGender },
+  { field: 'age',
+    headerText: 'Age',
+    width: '130',
+    format: 'yMd',
+    textAlign: 'Left',
+    template: patientGridAge },
+
+  { field: 'department',
     headerText: 'Department',
-    width: '150',
-    textAlign: 'Center' },
-  { field: 'Status',
+    width: '130',
+    format: 'yMd',
+    textAlign: 'Left',
+    template: patientGridDepartment },
+  { field: 'status',
     headerText: 'Status',
     width: '130',
     format: 'yMd',
-    textAlign: 'Center',
-    template: customerGridStatus },
+    textAlign: 'Left',
+    template: patientGridStatus },
+
+  { field: 'medicalnote',
+    headerText: 'Medical Note',
+    width: '130',
+    format: 'yMd',
+    textAlign: 'Left',
+    template: patientGridMedicalNote },
+  { field: 'diagnosisstatus',
+    headerText: 'Diagnosis Status',
+    width: '180',
+    format: 'yMd',
+    textAlign: 'Left',
+    template: patientGridDiagnosisStatus },
   {
-    field: 'Weeks',
-    headerText: 'Date of Diagnosis',
-    width: '100',
+    field: 'doctorfirstname',
+    headerText: 'Doctor First Name ',
+    width: '180',
     format: 'C2',
-    textAlign: 'Center' },
+    textAlign: 'Left' },
 
-  { field: 'Location',
-    headerText: 'Address',
-    width: '150',
-    textAlign: 'Center' },
+  { field: 'doctorlastname',
+    headerText: 'Doctor Last Name',
+    width: '180',
+    textAlign: 'Left' },
 
-  { field: 'CustomerID',
-    headerText: 'Patient ID',
+  { field: 'doctorid',
+    headerText: 'Doctor ID',
     width: '120',
-    textAlign: 'Center',
+    textAlign: 'Left',
     isPrimaryKey: true,
   },
 
 ];
 
 export const employeesGrid = [
-  { headerText: 'First Name',
+  { field: 'firstname',
+    headerText: 'First Name',
     width: '150',
-    template: gridEmployeeProfile,
-    textAlign: 'Center' },
-  { headerText: 'Last Name',
-    width: '150',
-    template: gridEmployeeProfile2,
-    textAlign: 'Center' },
-  { field: 'Name',
-    headerText: '',
-    width: '0',
-    textAlign: 'Center',
-  },
-  { field: 'LastName',
+    template: gridDoctorFirstName,
+    textAlign: 'Left' },
+  { field: 'lastname',
     headerText: 'Last Name',
+    width: '150',
+    template: gridDoctorLastName,
+    textAlign: 'Left' },
+  { field: 'username',
+    headerText: 'Username',
     width: '0',
-    textAlign: 'Center',
+    textAlign: 'Left',
   },
-  { field: 'Title',
-    headerText: 'Department',
+  { field: 'email',
+    headerText: 'Email',
+    width: '0',
+    textAlign: 'Left',
+  },
+  { field: 'address',
+    headerText: 'Physical Address',
     width: '170',
-    textAlign: 'Center',
+    textAlign: 'Left',
   },
-  { headerText: 'Level',
+  { field: 'level',
+    headerText: 'Level',
     width: '120',
-    textAlign: 'Center',
-    template: gridEmployeeCountry },
-
-  { field: 'HireDate',
-    headerText: 'Hire Date',
-    width: '135',
-    format: 'yMd',
-    textAlign: 'Center' },
+    textAlign: 'Left',
+    template: gridDoctorLevel },
 
   { field: 'gender',
     headerText: 'Gender',
-    width: '120',
-    textAlign: 'Center' },
+    width: '135',
+    format: 'yMd',
+    textAlign: 'CeLeftnter' },
 
-  { field: 'EmployeeID',
+  { field: 'age',
+    headerText: 'Age',
+    width: '120',
+    textAlign: 'Left' },
+
+  { field: 'department',
+    headerText: 'Department',
+    width: '175',
+    textAlign: 'Left' },
+
+  { field: 'doctorid',
     headerText: 'Doctor ID',
-    width: '125',
-    textAlign: 'Center' },
+    width: '175',
+    textAlign: 'Left' },
 ];
 
 export const links = [
@@ -928,7 +1035,6 @@ export const customersData = [
   },
   {
     CustomerID: 937984,
-
     CustomerName: 'Michael',
     CustomerLastName: 'Jamil',
     ProjectName: 'Surgery',
@@ -1068,7 +1174,6 @@ export const customersData = [
   },
   {
     CustomerID: 1015,
-
     CustomerName: 'Michael',
     CustomerEmail: 'michael@gmail.com',
     ProjectName: 'Weekly WP Theme',
@@ -1110,7 +1215,6 @@ export const customersData = [
   },
   {
     CustomerID: 1018,
-
     CustomerName: 'Andrew McDownland',
     CustomerEmail: 'andrew@gmail.com',
     ProjectName: 'Real Homes WP Theme',
@@ -1124,7 +1228,6 @@ export const customersData = [
   },
   {
     CustomerID: 1019,
-
     CustomerName: 'Christopher Jamil',
     CustomerEmail: 'jamil@gmail.com',
     ProjectName: 'MedicalPro WP Theme',
@@ -1138,7 +1241,6 @@ export const customersData = [
   },
   {
     CustomerID: 1020,
-
     CustomerName: 'Michael',
     CustomerEmail: 'michael@gmail.com',
     ProjectName: 'Weekly WP Theme',
@@ -1180,7 +1282,6 @@ export const customersData = [
   },
   {
     CustomerID: 1023,
-
     CustomerName: 'Andrew McDownland',
     CustomerEmail: 'andrew@gmail.com',
     ProjectName: 'Real Homes WP Theme',
@@ -1194,7 +1295,6 @@ export const customersData = [
   },
   {
     CustomerID: 1024,
-
     CustomerName: 'Christopher Jamil',
     CustomerEmail: 'jamil@gmail.com',
     ProjectName: 'MedicalPro WP Theme',
@@ -1208,7 +1308,6 @@ export const customersData = [
   },
   {
     CustomerID: 1025,
-
     CustomerName: 'Michael',
     CustomerEmail: 'michael@gmail.com',
     ProjectName: 'Weekly WP Theme',
@@ -1242,7 +1341,6 @@ export const customersData = [
     Status: 'Active',
     CustomerImage:
       avatar3,
-
     StatusBg: '#8BE78B',
     Weeks: '11',
     Budget: '08/09/2021',
@@ -1250,7 +1348,6 @@ export const customersData = [
   },
   {
     CustomerID: 1028,
-
     CustomerName: 'Andrew McDownland',
     CustomerEmail: 'andrew@gmail.com',
     ProjectName: 'Real Homes WP Theme',
@@ -1264,7 +1361,6 @@ export const customersData = [
   },
   {
     CustomerID: 1029,
-
     CustomerName: 'Christopher Jamil',
     CustomerEmail: 'jamil@gmail.com',
     ProjectName: 'MedicalPro WP Theme',
@@ -1278,7 +1374,6 @@ export const customersData = [
   },
   {
     CustomerID: 1030,
-
     CustomerName: 'Michael',
     CustomerEmail: 'michael@gmail.com',
     ProjectName: 'Weekly WP Theme',
@@ -1305,7 +1400,6 @@ export const customersData = [
   },
   {
     CustomerID: 1032,
-
     CustomerName: 'Sunil Joshi',
     CustomerEmail: 'sunil@gmail.com',
     ProjectName: 'Elite Admin',
@@ -1320,7 +1414,6 @@ export const customersData = [
   },
   {
     CustomerID: 1033,
-
     CustomerName: 'Andrew McDownland',
     CustomerEmail: 'andrew@gmail.com',
     ProjectName: 'Real Homes WP Theme',
@@ -1334,7 +1427,6 @@ export const customersData = [
   },
   {
     CustomerID: 1034,
-
     CustomerName: 'Christopher Jamil',
     CustomerEmail: 'jamil@gmail.com',
     ProjectName: 'MedicalPro WP Theme',
@@ -1348,7 +1440,6 @@ export const customersData = [
   },
   {
     CustomerID: 1035,
-
     CustomerName: 'Michael',
     CustomerEmail: 'michael@gmail.com',
     ProjectName: 'Weekly WP Theme',
@@ -1375,7 +1466,6 @@ export const customersData = [
   },
   {
     CustomerID: 1037,
-
     CustomerName: 'Sunil Joshi',
     CustomerEmail: 'sunil@gmail.com',
     ProjectName: 'Elite Admin',
