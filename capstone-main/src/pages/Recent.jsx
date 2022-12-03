@@ -53,7 +53,7 @@ const Recent = () => {
                   : 'bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 '
               }
           >
-            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+            <div className="fixed right-10 top-4" style={{ zIndex: '1000' }}>
               <Navbar />
             </div>
           </div>
