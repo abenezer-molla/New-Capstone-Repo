@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, InputGroup } from 'react-bootstrap';
-import { Box, InputRightElement, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
+import { Box, InputRightElement, Input, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { login } from '../auth';
 
@@ -44,7 +44,7 @@ export default function Login() {
           <br />
           <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Username</Text>
           <Form.Group id="username">
-            <Form.Control
+            <Input
               type="username"
               name="username"
               {...register('username', { required: true })}
@@ -61,7 +61,7 @@ export default function Login() {
 
           <Form.Group id="password">
             <InputGroup size="md">
-              <Form.Control
+              <Input
                 pr="4.5rem"
                 type={show ? 'text' : 'password'}
                 placeholder="Enter password"

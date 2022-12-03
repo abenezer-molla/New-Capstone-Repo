@@ -4,7 +4,8 @@ from exts import db
 
 
 class Patients(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=True)
+    patientid = db.Column(db.Integer, nullable=True)
     patientfirstname = db.Column(db.String(80), nullable=False)
     patientlastname = db.Column(db.String(80), nullable=False)
     address = db.Column(db.String(80), nullable=False)
@@ -14,8 +15,10 @@ class Patients(db.Model):
     status = db.Column(db.String(80), nullable=False)
     medicalnote = db.Column(db.String(), nullable=False)
     diagnosisstatus = db.Column(db.String(80), nullable=False)
-    doctorusername = db.Column(
-        db.String(80), nullable=False)
+    doctorfirstname = db.Column(
+        db.String(80), nullable=True)
+    doctorlastname = db.Column(
+        db.String(80), nullable=True)
     doctorid = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):

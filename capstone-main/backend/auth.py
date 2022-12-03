@@ -20,11 +20,8 @@ signup_model = auth_ns.model(
         "address": fields.String(),
         "password": fields.String(),
         "level": fields.String(),
-        "password": fields.String(),
         "gender": fields.String(),
         "age": fields.Integer(),
-        "doctorID": fields.Integer(),
-        "hiredate": fields.Date(),
         "department": fields.String(),
     }
 )

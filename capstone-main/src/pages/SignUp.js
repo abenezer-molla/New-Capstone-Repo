@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, InputGroup, InputRightElement, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
+import { Box, InputGroup, InputRightElement, Input, Center, Divider, Text, Button, PinInputField, PinInput, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
 import { Form, Alert } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
@@ -95,7 +95,7 @@ export default function SignUp() {
 
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's First Name</Text>
               <Form.Group id="firstname">
-                <Form.Control
+                <Input
                   type="firstname"
                   name="firstname"
                   // eslint-disable-next-line react/jsx-props-no-spreading
@@ -108,7 +108,7 @@ export default function SignUp() {
               </Form.Group>
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Last Name</Text>
               <Form.Group id="lastname">
-                <Form.Control
+                <Input
                   type="lastname"
                   name="lastname"
                   // eslint-disable-next-line react/jsx-props-no-spreading
@@ -122,7 +122,7 @@ export default function SignUp() {
               <br />
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Username</Text>
               <Form.Group id="username">
-                <Form.Control
+                <Input
                   type="username"
                   name="username"
                   // eslint-disable-next-line react/jsx-props-no-spreading
@@ -137,7 +137,7 @@ export default function SignUp() {
               <br />
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Email</Text>
               <Form.Group id="email">
-                <Form.Control
+                <Input
                   type="email"
                   name="email"
                   // eslint-disable-next-line react/jsx-props-no-spreading
@@ -153,7 +153,7 @@ export default function SignUp() {
               <br />
               <Form.Group id="password">
                 <InputGroup size="md">
-                  <Form.Control
+                  <Input
                     pr="4.5rem"
                     type={show ? 'text' : 'password'}
                     placeholder="Enter password"
@@ -174,7 +174,7 @@ export default function SignUp() {
               <br />
               <Form.Group id="confirmpassword">
                 <InputGroup size="md">
-                  <Form.Control
+                  <Input
                     pr="4.5rem"
                     type={show ? 'text' : 'password'}
                     placeholder="Confirm Password"
@@ -193,7 +193,7 @@ export default function SignUp() {
               <br />
               <Text style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Address</Text>
               <Form.Group id="address">
-                <Form.Control
+                <Input
                   type="address"
                   name="address"
                   {...register('address', { required: true })}
@@ -205,7 +205,7 @@ export default function SignUp() {
               </Form.Group>
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Level</Text>
               <Form.Group id="level">
-                <Form.Control
+                <Input
                   type="level"
                   name="level"
                   {...register('level', { required: true })}
@@ -217,7 +217,7 @@ export default function SignUp() {
               </Form.Group>
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Gender</Text>
               <Form.Group id="gender">
-                <Form.Control
+                <Input
                   type="gender"
                   name="gender"
                   {...register('gender', { required: true })}
@@ -230,7 +230,7 @@ export default function SignUp() {
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Age </Text>
               <br />
               <Form.Group id="age">
-                <Form.Control
+                <Input
                   type="age"
                   name="age"
                   {...register('age', { required: true })}
@@ -243,7 +243,7 @@ export default function SignUp() {
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>
               <br />
               <Form.Group id="doctorid">
-                <Form.Control
+                <Input
                   type="doctorid"
                   name="doctorid"
                   {...register('doctorid', { required: true })}
@@ -269,7 +269,7 @@ export default function SignUp() {
               <Text mt={5} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Department the Doctor is Working Under</Text>
               <br />
               <Form.Group id="department">
-                <Form.Control
+                <Input
                   type="department"
                   name="department"
                   {...register('department', { required: true })}

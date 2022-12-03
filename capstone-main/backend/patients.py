@@ -14,14 +14,14 @@ patients_model = patients_ns.model(
         "patientfirstname": fields.String(),
         "patientlastname": fields.String(),
         "address": fields.String(),
-        "level": fields.String(),
         "gender": fields.String(),
         "age": fields.Integer(),
         "department": fields.String(),
         "status": fields.String(),
         "medicalnote": fields.String(),
         "diagnosisstatus": fields.String(),
-        "doctorusername": fields.String(),
+        "doctorfirstname": fields.String(),
+        "doctorlastname": fields.String(),
         "doctorid": fields.Integer(),
     }
 )
@@ -46,15 +46,13 @@ class PatientsResource(Resource):
 
     @patients_ns.marshal_with(patients_model)
     @patients_ns.expect(patients_model)
-    @jwt_required()
     def post(self):
         """Create a new patient"""
 
         data = request.get_json()
 
         new_patient = Patients(
-
-            id=data.get('id'),
+            patientid=data.get('patientid'),
             patientfirstname=data.get('patientfirstname'),
             patientlastname=data.get('patientlastname'),
             address=data.get('address'),
@@ -64,7 +62,8 @@ class PatientsResource(Resource):
             status=data.get('status'),
             medicalnote=data.get('medicalnote'),
             diagnosisstatus=data.get('diagnosisstatus'),
-            doctorusername=data.get('doctorusername'),
+            doctorfirstname=data.get('doctorfirstname'),
+            doctorlastname=data.get('doctorlastname'),
             doctorid=data.get('doctorid')
         )
 
