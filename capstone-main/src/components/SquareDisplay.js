@@ -22,37 +22,20 @@ function Cards() {
               label="Internal Medicine"
               path="/intermedicine"
             />
-
           </ul>
           <br />
           <ul className="cards__items">
-            <CardItem
-              src={avatar3}
-              text="Insert data in Emergency Wing Database"
-              label="Emergency Room"
-              path="/emergencyRoom"
-            />
             <CardItem
               src={avatar5}
               text="Insert data in Pediatric Wing Database"
               label="Pediatrics"
               path="/pediatrics"
             />
-          </ul>
-          <ul className="cards__items">
             <CardItem
               src={avatar7}
               text="Insert data in Surgery Wing Database"
               label="Surgery"
               path="/surgery"
-            />
-          </ul>
-          <ul className="cards__items">
-            <CardItem
-              src={avatar2}
-              text="Insert Chronic Illness Wing Database"
-              label="Chronic Illness"
-              path="/chronicill"
             />
           </ul>
           <ul className="cards__items">
@@ -69,12 +52,24 @@ function Cards() {
               path="/cancer"
             />
           </ul>
-          <ul>
+          <ul className="cards__items">
             <CardItem
               src={avatar8}
               text="Insert data in Obstetrics and Gynecology Wing Database"
               label="Obstetrics and Gynecology"
               path="/obsandgyne"
+            />
+            <CardItem
+              src={avatar2}
+              text="Insert Chronic Illness Wing Database"
+              label="Chronic Illness"
+              path="/chronicill"
+            />
+            <CardItem
+              src={avatar3}
+              text="Insert data in Emergency Wing Database"
+              label="Emergency Room"
+              path="/emergencyRoom"
             />
           </ul>
         </div>

@@ -85,6 +85,7 @@ const Patients = () => {
               allowPdfExport
               allowSorting
             >
+              <a href="/patients/{{patients.patientid}}"> Medical Note </a>
               <ColumnsDirective>
                 {customersGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
               </ColumnsDirective>

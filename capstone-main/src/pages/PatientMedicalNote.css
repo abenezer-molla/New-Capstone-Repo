@@ -1,0 +1,19 @@
+
+.popup-inner {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+
+.popup-innerTwo {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100rem;
+    margin-left: 8em;
+
+
+}

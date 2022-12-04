@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Footer, ThemeSettings } from './components';
 import { HomePage, Recent, Calendar, Doctors, Patients, Kanban, Line, Editor } from './pages';
@@ -10,6 +10,7 @@ import InsertDataInfectious from './pages/InsertDataInfectious';
 import InsertDataInternalMed from './pages/InsertDataInternalMed';
 import InsertDataSurgery from './pages/InsertDataSurgery';
 import InsertDataEmergency from './pages/InsertDataEmergency';
+import PatientMedicalNote from './pages/PatientMedicalNote';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import './App.css';
@@ -18,7 +19,8 @@ import { useStateContext } from './contexts/ContextProvider';
 
 const App = (props) => {
   const { isLoggedIn } = props;
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, themeSettings } = useStateContext();
+  const [patients, setPatients] = useState();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem('colorMode');
     const currentThemeMode = localStorage.getItem('themeMode');
@@ -30,6 +32,16 @@ const App = (props) => {
   if (!isLoggedIn) {
     return <SignUp />;
   }
+
+  useEffect(() => {
+    fetch('/patients/patients')
+      .then((res) => res.json())
+      .then((data) => {
+        setPatients(data);
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
@@ -56,14 +68,14 @@ const App = (props) => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/medicalnote/:id" element={<PatientMedicalNote />} />
 
             {/* apps  */}
             <Route path="/kanban" element={<Kanban />} />
             <Route path="/editor" element={<Editor />} />
-            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/medicalnote" patients={patients} element={<Calendar />} />
 
             {/* charts  */}
-            <Route path="/line" element={<Line />} />
           </Routes>
         </div>
         <Footer />

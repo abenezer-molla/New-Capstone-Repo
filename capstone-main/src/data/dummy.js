@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AiOutlineCalendar, AiOutlineStock } from 'react-icons/ai';
 import { FiBookOpen, FiEdit, FiHome, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { BsKanban, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsMessenger, BsFillEmojiSmileFill } from 'react-icons/bs';
@@ -7,6 +7,10 @@ import { RiContactsLine } from 'react-icons/ri';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { TiTick } from 'react-icons/ti';
+import Button from 'react-bootstrap/Button';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate, Link } from 'react-router-dom';
 import avatar from './aben.jpeg';
 import avatar2 from './avatar2.jpg';
 import avatar3 from './avatar3.png';
@@ -18,6 +22,8 @@ import product4 from './product4.jpg';
 import product5 from './product5.jpg';
 import product6 from './product6.jpg';
 import product7 from './product7.jpg';
+
+import PatientMedicalNote from '../pages/PatientMedicalNote';
 
 export const gridOrderImage = (props) => (
   <div>
@@ -145,13 +151,27 @@ const patientGridStatus = (props) => (
   </div>
 );
 
-const patientGridMedicalNote = (props) => (
-  <div className="image flex gap-4">
-    <div>
-      <p>{props.medicalnote}</p>
+function patientGridMedicalNote(props) {
+  const [readMore, setReadMore] = useState(false);
+  const navigate = useNavigate();
+
+  return (
+    <div className="image flex gap-4">
+      <div>
+        {/* <Button onClick={() => setReadMore(true)}> Medical Note </Button> */}
+        {/* {Component} */}
+        <Button>
+          <Link
+            to={`/medicalnote/${props.patientid}`}
+            state={{ diagnosisstatus: props.diagnosisstatus, patientid: props.patientid, patientfirstname: props.patientfirstname, patientlastname: props.patientlastname, medicalnote: props.medicalnote }}
+          >
+            Medical Note
+          </Link>
+        </Button>
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
 const patientGridDiagnosisStatus = (props) => (
   <div className="image flex gap-4">
@@ -427,7 +447,6 @@ export const LinePrimaryYAxis = {
 };
 
 export const customersGrid = [
-  { type: 'checkbox', width: '50' },
   { field: 'patientid',
     headerText: 'Patient ID',
     width: '150',
@@ -477,13 +496,13 @@ export const customersGrid = [
 
   { field: 'medicalnote',
     headerText: 'Medical Note',
-    width: '130',
+    width: '200',
     format: 'yMd',
     textAlign: 'Left',
     template: patientGridMedicalNote },
   { field: 'diagnosisstatus',
     headerText: 'Diagnosis Status',
-    width: '180',
+    width: '220',
     format: 'yMd',
     textAlign: 'Left',
     template: patientGridDiagnosisStatus },
