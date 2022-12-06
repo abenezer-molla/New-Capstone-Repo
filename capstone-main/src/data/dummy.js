@@ -466,7 +466,7 @@ export const customersGrid = [
 
   { field: 'address',
     headerText: 'Address',
-    width: '150',
+    width: '200',
     textAlign: 'Left' },
   { field: 'gender',
     headerText: 'Gender',
@@ -483,7 +483,7 @@ export const customersGrid = [
 
   { field: 'department',
     headerText: 'Department',
-    width: '130',
+    width: '200',
     format: 'yMd',
     textAlign: 'Left',
     template: patientGridDepartment },

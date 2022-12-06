@@ -76,31 +76,43 @@ class PatientsResource(Resource):
 class PatientResource(Resource):
 
     @patients_ns.marshal_with(patients_model)
-    def get(self, patientid):
+    def get(self, id):
         """Get a patient by id """
-        patients = Patients.query.get_or_404(id)
+        patients = Patients.query.filter(Patients.patientid == id).first()
 
         return patients
 
     @patients_ns.marshal_with(patients_model)
-    @jwt_required()
+    # @jwt_required()
     def put(self, id):
         """Update a patient by id """
+        print('Here', Patients.query.all(), id)
 
-        patient_data_to_update = Patients.query.get_or_404(id)
+        patient_data_to_update = Patients.query.filter(
+            Patients.patientid == id).first()
 
         data = request.get_json()
 
         patient_data_to_update.update(
-            data.get('title'), data.get('description'))
+            data.get('patientfirstname'),
+            data.get('patientlastname'),
+            data.get('address'),
+            data.get('gender'),
+            data.get('age'),
+            data.get('department'),
+            data.get('status'),
+            data.get('medicalnote'),
+            data.get('diagnosisstatus'),
+        )
 
         return patient_data_to_update
 
     @patients_ns.marshal_with(patients_model)
-    @jwt_required()
+    # @jwt_required()
     def delete(self, id):
         """Delete a patient by id """
 
-        patient_data_to_delete = Patients.query.get_or_404(id)
+        patient_data_to_delete = Patients.query.filter(
+            Patients.patientid == id).first()
         patient_data_to_delete.delete()
         return patient_data_to_delete

@@ -10,7 +10,7 @@ import { useStateContext } from '../contexts/ContextProvider';
 const Doctors = () => {
   const toolbarOptions = ['Search'];
   const [doctors, setDoctors] = useState();
-  const editing = { allowDeleting: true, allowEditing: true };
+  const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog' };
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem('colorMode');
@@ -78,7 +78,9 @@ const Doctors = () => {
               width="auto"
               allowPaging
               allowSorting
+              allowGrouping
               pageSettings={{ pageCount: 5 }}
+              groupSettings={{ columns: ['department'] }}
               editSettings={editing}
               toolbar={toolbarOptions}
             >

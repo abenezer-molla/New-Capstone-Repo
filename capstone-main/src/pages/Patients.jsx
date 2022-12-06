@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { GridComponent, ColumnsDirective, ColumnDirective, Page, PdfExport, ExcelExport, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
+import { GridComponent, ColumnsDirective, ColumnDirective, Page, PdfExport, ExcelExport, Selection, Inject, Edit, Toolbar, Sort, Filter, ToolbarItems } from '@syncfusion/ej2-react-grids';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { FiSettings } from 'react-icons/fi';
-import { customersData, customersGrid } from '../data/dummy';
+import { customersGrid } from '../data/dummy';
 import { Header, Navbar, Sidebar } from '../components';
 import { useStateContext } from '../contexts/ContextProvider';
 
 const Patients = () => {
   const selectionsettings = { persistSelection: true };
-  const toolbarOptions = ['Delete'];
+  const toolbarOptions = ['Delete', 'Edit', 'Search', 'PdfExport'];
   const [patients, setPatients] = useState();
-  const editing = { allowDeleting: true, allowEditing: true };
+  const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog' };
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem('colorMode');
@@ -20,17 +20,56 @@ const Patients = () => {
       setCurrentMode(currentThemeMode);
     }
   }, []);
-
-  useEffect(() => {
+  function refreshGrid() {
     fetch('/patients/patients')
       .then((res) => res.json())
       .then((data) => {
-        setPatients(data);
-        console.log(data);
+        setPatients({
+          result: data, // array with data to be displayed in the grid
+          count: data?.length,
+        });
       })
       .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    refreshGrid();
   }, []);
 
+  function dataSourceChanged(state) {
+    if (state.action === 'edit') {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(state.data),
+      };
+
+      fetch(`/patients/patients/${state.data.patientid}`, requestOptions)
+        .then((res) => res.json())
+        // eslint-disable-next-line no-shadow
+        .then((data) => {
+          console.log('DATA =', data);
+        })
+        .catch((err) => console.log(err));
+
+      fetch('/patients/patients')
+        .then((res) => res.json())
+        .then((data) => {
+          setPatients({
+            result: data, // array with data to be displayed in the grid
+            count: data?.length,
+          });
+        })
+        .catch((err) => console.log(err));
+    } else if (state.requestType === 'delete') {
+      const requestOptionsTwo = {
+        method: 'delete',
+      };
+      fetch(`/patients/patients/${state.data[0].patientid}`, requestOptionsTwo)
+        .catch((err) => console.log(err));
+    }
+  }
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <div className="grid grid-cols-12 gap-20">
@@ -75,8 +114,12 @@ const Patients = () => {
             <Header category="Page" title="Patients" />
             <GridComponent
               dataSource={patients}
-              enableHover={false}
+              // eslint-disable-next-line react/jsx-no-bind
+              dataSourceChanged={dataSourceChanged}
+              enableHover
               allowPaging
+              // allowGrouping
+              groupSettings={{ columns: ['department'] }}
               pageSettings={{ pageCount: 5 }}
               selectionSettings={selectionsettings}
               toolbar={toolbarOptions}
@@ -85,7 +128,6 @@ const Patients = () => {
               allowPdfExport
               allowSorting
             >
-              <a href="/patients/{{patients.patientid}}"> Medical Note </a>
               <ColumnsDirective>
                 {customersGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
               </ColumnsDirective>
