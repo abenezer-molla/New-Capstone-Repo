@@ -88,23 +88,8 @@ class SignUp(Resource):
     @auth_ns.marshal_with(doctors_model)
     def get(self):
         """Get all doctors """
-        token = None
-        print(request.headers.get('Authorization'))
-
-        if 'Authorization' in request.headers:
-            token = request.headers.get('Authorization').split(' ')[1]
-
-        if not token:
-            return jsonify({'message': 'Token is missing !!'}), 401
-
-        data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
-        print('data', data)
-        current_user = User.query.filter(
-            User.username == data['sub']).first()
-        #user_id = get_jwt_identity()
-        # print(user_id)
-        #doctors2 = User.query.all()
-        return [current_user]
+        doctors = User.query.all()
+        return doctors
 
     @auth_ns.expect(signup_model)
     def post(self):

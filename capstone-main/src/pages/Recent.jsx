@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GridComponent, ColumnsDirective, ColumnDirective, Resize, Sort, ContextMenu, Filter, Page, ExcelExport, PdfExport, Edit, Inject } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
@@ -8,6 +8,8 @@ import { useStateContext } from '../contexts/ContextProvider';
 
 const Recent = () => {
   const editing = { allowDeleting: true, allowEditing: true };
+  const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY');
+  const [patients, setPatients] = useState();
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem('colorMode');
@@ -17,6 +19,29 @@ const Recent = () => {
       setCurrentMode(currentThemeMode);
     }
   }, []);
+
+  const requestOptions = {
+    headers: {
+      'Authorization': `Bearer ${JSON.parse(token)}`,
+    },
+  };
+  function refreshGrid() {
+    fetch('/patients/patients/referral', requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
+        setPatients({
+          result: data, // array with data to be displayed in the grid
+          count: data?.length,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    refreshGrid();
+  }, []);
+
+  console.log('patients', patients);
+
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <div className="grid grid-cols-12 gap-20">
@@ -61,11 +86,13 @@ const Recent = () => {
             <Header category="Page" title="Recent Diagnosis" />
             <GridComponent
               id="gridcomp"
-              dataSource={ordersData}
+              dataSource={patients}
               allowPaging
               allowSorting
               allowExcelExport
               allowPdfExport
+              // eslint-disable-next-line react/jsx-no-bind
+              // dataSourceChanged={dataSourceChanged}
               contextMenuItems={contextMenuItems}
               editSettings={editing}
             >

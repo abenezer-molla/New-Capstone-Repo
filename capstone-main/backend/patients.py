@@ -1,7 +1,10 @@
 from flask_restx import Namespace, Resource, fields
 from models import Patients
 from flask_jwt_extended import jwt_required
-from flask import request
+import jwt
+from config import Config
+from models import User
+from flask import request, jsonify
 
 
 patients_ns = Namespace('patients', description="A namespace for Patients")
@@ -32,6 +35,28 @@ patients_model = patients_ns.model(
 class HelloPatient(Resource):
     def get(self):
         return {"message": "Hello World"}
+
+
+@patients_ns.route('/patients/referral')
+class Referral(Resource):
+    @jwt_required()
+    @patients_ns.marshal_with(patients_model)
+    def get(self):
+        """Get all doctors """
+        token = None
+        print(request.headers.get('Authorization'))
+
+        if 'Authorization' in request.headers:
+            token = request.headers.get('Authorization').split(' ')[1]
+
+        if not token:
+            return jsonify({'message': 'Token is missing !!'}), 401
+
+        data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
+        print('data', data)
+        current_user = Patients.query.filter(
+            Patients.doctorusername == data['sub']).first()
+        return [current_user]
 
 
 @patients_ns.route('/patients')

@@ -56,7 +56,7 @@ const App = (props) => {
             <Route path="/HomePage" element={<HomePage />} />
 
             {/* pages  */}
-            <Route path="/recent" element={<PrivateRoute><Recent /></PrivateRoute>} />
+            <Route path="/Referrals" element={<PrivateRoute><Recent /></PrivateRoute>} />
             <Route path="/physicians" element={<PrivateRoute><Doctors /></PrivateRoute>} />
             <Route path="/patients" element={<PrivateRoute><Patients /></PrivateRoute>} />
             <Route path="/emergencyRoom" element={<PrivateRoute><InsertDataEmergency /></PrivateRoute>} />
