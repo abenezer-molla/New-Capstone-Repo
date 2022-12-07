@@ -6,9 +6,7 @@ from config import Config
 from models import User
 from flask import request, jsonify
 
-
 patients_ns = Namespace('patients', description="A namespace for Patients")
-
 
 patients_model = patients_ns.model(
     "Patient",

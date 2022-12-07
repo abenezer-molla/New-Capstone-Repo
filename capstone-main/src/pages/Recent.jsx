@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { GridComponent, ColumnsDirective, ColumnDirective, Resize, Sort, ContextMenu, Filter, Page, ExcelExport, PdfExport, Edit, Inject } from '@syncfusion/ej2-react-grids';
+import { GridComponent, ColumnsDirective, ColumnDirective, Resize, Sort, ContextMenu, Filter, Page, ExcelExport, PdfExport, Edit, Inject, Toolbar, Selection } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-import { ordersData, contextMenuItems, ordersGrid } from '../data/dummy';
+import { contextMenuItems, ordersGrid } from '../data/dummy';
 import { Header, Navbar, Sidebar } from '../components';
 import { useStateContext } from '../contexts/ContextProvider';
 
 const Recent = () => {
-  const editing = { allowDeleting: true, allowEditing: true };
+  const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog' };
+  const selectionsettings = { persistSelection: true };
+  const toolbarOptions = ['Delete', 'Edit', 'Search', 'PdfExport'];
   const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY');
   const [patients, setPatients] = useState();
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
@@ -39,6 +41,38 @@ const Recent = () => {
   useEffect(() => {
     refreshGrid();
   }, []);
+
+  function dataSourceChanged(state) {
+    if (state.action === 'edit') {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
+        body: JSON.stringify(state.data),
+      };
+
+      fetch(`/patients/patients/${state.data.patientid}`, requestOptions)
+        .then((res) => res.json())
+        // eslint-disable-next-line no-shadow
+        .then((data) => {
+          console.log('DATA =', data);
+        })
+        .then((res) => state.endEdit())
+        .catch((err) => console.log(err));
+    } else if (state.requestType === 'delete') {
+      const requestOptionsTwo = {
+        method: 'delete',
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
+      };
+      fetch(`/patients/patients/${state.data[0].patientid}`, requestOptionsTwo)
+        .then((res) => state.endEdit())
+        .catch((err) => console.log(err));
+    }
+  }
 
   console.log('patients', patients);
 
@@ -83,7 +117,7 @@ const Recent = () => {
             </div>
           </div>
           <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-            <Header category="Page" title="Recent Diagnosis" />
+            <Header category="Page" title="Referrals for Current User" />
             <GridComponent
               id="gridcomp"
               dataSource={patients}
@@ -91,8 +125,10 @@ const Recent = () => {
               allowSorting
               allowExcelExport
               allowPdfExport
+              selectionSettings={selectionsettings}
+              toolbar={toolbarOptions}
               // eslint-disable-next-line react/jsx-no-bind
-              // dataSourceChanged={dataSourceChanged}
+              dataSourceChanged={dataSourceChanged}
               contextMenuItems={contextMenuItems}
               editSettings={editing}
             >
@@ -100,7 +136,7 @@ const Recent = () => {
                 {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                 {ordersGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
               </ColumnsDirective>
-              <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport]} />
+              <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport, Selection, Toolbar]} />
             </GridComponent>
           </div>
         </div>

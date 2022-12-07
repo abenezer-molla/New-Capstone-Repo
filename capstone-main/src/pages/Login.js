@@ -22,9 +22,8 @@ export default function Login() {
     fetch('/auth/login', requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.access_token);
-
         if (data.access_token) {
+          console.log('DATAAAAAAA', data);
           login(data.access_token);
           navigate('/HomePage');
         } else {

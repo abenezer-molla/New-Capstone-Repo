@@ -21,7 +21,7 @@ export default function SignUp() {
         { /*  setMessage(data.patientfirstname);  */ }
       })
       .catch(err => console.log(err));
-    }, []);
+  }, []);
 
   const [message, setMessage] = useState('');
 
