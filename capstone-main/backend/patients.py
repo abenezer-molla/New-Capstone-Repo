@@ -23,6 +23,7 @@ patients_model = patients_ns.model(
         "doctorfirstname": fields.String(),
         "doctorlastname": fields.String(),
         "doctorid": fields.Integer(),
+        "doctorusername": fields.String(),
     }
 )
 
@@ -64,7 +65,8 @@ class PatientsResource(Resource):
             diagnosisstatus=data.get('diagnosisstatus'),
             doctorfirstname=data.get('doctorfirstname'),
             doctorlastname=data.get('doctorlastname'),
-            doctorid=data.get('doctorid')
+            doctorid=data.get('doctorid'),
+            doctorusername=data.get('doctorusername')
         )
 
         new_patient.save()
@@ -83,7 +85,7 @@ class PatientResource(Resource):
         return patients
 
     @patients_ns.marshal_with(patients_model)
-    # @jwt_required()
+    @jwt_required()
     def put(self, id):
         """Update a patient by id """
         print('Here', Patients.query.all(), id)
@@ -108,7 +110,7 @@ class PatientResource(Resource):
         return patient_data_to_update
 
     @patients_ns.marshal_with(patients_model)
-    # @jwt_required()
+    @jwt_required()
     def delete(self, id):
         """Delete a patient by id """
 

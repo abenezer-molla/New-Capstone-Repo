@@ -13,6 +13,8 @@ import InsertDataEmergency from './pages/InsertDataEmergency';
 import PatientMedicalNote from './pages/PatientMedicalNote';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
+import PrivateRoute from './pages/PrivateRoute';
+
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
@@ -51,24 +53,24 @@ const App = (props) => {
 
           <Routes>
             {/* dashboard  */}
-            <Route path="/HomePage" element={(<HomePage />)} />
+            <Route path="/HomePage" element={<HomePage />} />
 
             {/* pages  */}
-            <Route path="/recent" element={<Recent />} />
-            <Route path="/physicians" element={<Doctors />} />
-            <Route path="/patients" element={<Patients />} />
-            <Route path="/emergencyRoom" element={<InsertDataEmergency />} />
-            <Route path="/pediatrics" element={<InsertDataPedi />} />
-            <Route path="/chronicill" element={<InsertDataChronic />} />
-            <Route path="/intermedicine" element={<InsertDataInternalMed />} />
-            <Route path="/obsandgyne" element={<InsertDataGyne />} />
-            <Route path="/infectious" element={<InsertDataInfectious />} />
-            <Route path="/surgery" element={<InsertDataSurgery />} />
-            <Route path="/cancer" element={<InsertDataCancer />} />
+            <Route path="/recent" element={<PrivateRoute><Recent /></PrivateRoute>} />
+            <Route path="/physicians" element={<PrivateRoute><Doctors /></PrivateRoute>} />
+            <Route path="/patients" element={<PrivateRoute><Patients /></PrivateRoute>} />
+            <Route path="/emergencyRoom" element={<PrivateRoute><InsertDataEmergency /></PrivateRoute>} />
+            <Route path="/pediatrics" element={<PrivateRoute><InsertDataPedi /></PrivateRoute>} />
+            <Route path="/chronicill" element={<PrivateRoute><InsertDataChronic /></PrivateRoute>} />
+            <Route path="/intermedicine" element={<PrivateRoute><InsertDataInternalMed /></PrivateRoute>} />
+            <Route path="/obsandgyne" element={<PrivateRoute><InsertDataGyne /></PrivateRoute>} />
+            <Route path="/infectious" element={<PrivateRoute><InsertDataInfectious /></PrivateRoute>} />
+            <Route path="/surgery" element={<PrivateRoute><InsertDataSurgery /></PrivateRoute>} />
+            <Route path="/cancer" element={<PrivateRoute><InsertDataCancer /></PrivateRoute>} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/medicalnote/:id" element={<PatientMedicalNote />} />
+            <Route path="/medicalnote/:id" element={<PrivateRoute><PatientMedicalNote /></PrivateRoute>} />
 
             {/* apps  */}
             <Route path="/kanban" element={<Kanban />} />

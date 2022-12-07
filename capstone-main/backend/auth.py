@@ -1,12 +1,15 @@
 from flask_restx import Resource, Namespace, fields
 from models import User
+from config import Config
+from flask_login import LoginManager
+import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (JWTManager,
                                 create_access_token, create_refresh_token,
                                 get_jwt_identity,
                                 jwt_required)
-from flask import Flask, request, jsonify, make_response
-
+from flask import Flask, request, jsonify, make_response, session
+from functools import wraps
 auth_ns = Namespace('auth', description="A namespace for Authentication")
 
 signup_model = auth_ns.model(
@@ -53,16 +56,55 @@ login_model = auth_ns.model(
 )
 
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        # jwt is passed in the request header
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization']
+        # return 401 if token is not passed
+        if not token:
+            return jsonify({'message': 'Token is missing !!'}), 401
+
+        try:
+            # decoding the payload to fetch the stored details
+            data = jwt.decode(token, Config.SECRET_KEY)
+            current_user = User.query.filter_by(
+                doctorid=data['doctorid']).first()
+        except:
+            return jsonify({
+                'message': 'Token is invalid !!'
+            }), 401
+        # returns the current logged in users contex to the routes
+        return f(current_user, *args, **kwargs)
+
+    return decorated
+
+
 @auth_ns.route('/doctors')
 class SignUp(Resource):
-
-    @auth_ns.marshal_list_with(doctors_model)
+    @jwt_required()
+    @auth_ns.marshal_with(doctors_model)
     def get(self):
         """Get all doctors """
+        token = None
+        print(request.headers.get('Authorization'))
 
-        doctors = User.query.all()
+        if 'Authorization' in request.headers:
+            token = request.headers.get('Authorization').split(' ')[1]
 
-        return doctors
+        if not token:
+            return jsonify({'message': 'Token is missing !!'}), 401
+
+        data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
+        print('data', data)
+        current_user = User.query.filter(
+            User.username == data['sub']).first()
+        #user_id = get_jwt_identity()
+        # print(user_id)
+        #doctors2 = User.query.all()
+        return [current_user]
 
     @auth_ns.expect(signup_model)
     def post(self):
@@ -90,6 +132,49 @@ class SignUp(Resource):
 
         newUser.save()
         return make_response(jsonify({"message": "User created/registered successfuly"}), 201)
+
+
+@auth_ns.route('/doctors/<int:id>')
+class DoctorResource(Resource):
+
+    @auth_ns.marshal_with(doctors_model)
+    def get(self, id):
+        """Get a doctor by id """
+        doctor = User.query.filter(User.doctorid == id).first()
+
+        return doctor
+
+    @auth_ns.marshal_with(doctors_model)
+    @jwt_required()
+    def put(self, id):
+        """Update a doctor by id """
+
+        doctor_data_to_update = User.query.filter(
+            User.doctorid == id).first()
+
+        print('doctor_data_to_update', doctor_data_to_update)
+
+        data = request.get_json()
+
+        doctor_data_to_update.update(
+            address=data.get('address'),
+            level=data.get('level'),
+            gender=data.get('gender'),
+            age=data.get('age'),
+            department=data.get('department'),
+        )
+
+        return doctor_data_to_update
+
+    @auth_ns.marshal_with(doctors_model)
+    @jwt_required()
+    def delete(self, id):
+        """Delete a doctor by id """
+
+        doctor_data_to_delete = User.query.filter(
+            User.doctorid == id).first()
+        doctor_data_to_delete.delete()
+        return doctor_data_to_delete
 
 
 @auth_ns.route('/login')  # function for Login user

@@ -13,22 +13,18 @@ function PatientMedicalNote() {
         <br />
         <br />
         <div className="popup-inner">
-          <h1 style={{ fontSize: '30px', fontWeight: '900' }}> Patient's ID = </h1> 
+          <h1 style={{ fontSize: '30px', fontWeight: '900' }}> Patient's ID :  </h1> 
           <h1 style={{ color: 'blue', fontSize: '30px', fontWeight: '900' }}>{patientid} </h1>
         </div>
         <br />
         <div className="popup-inner">
-          <h1 style={{ fontSize: '30px', fontWeight: '900' }}> Status of Patient's Diagnosis = </h1> 
+          <h1 style={{ fontSize: '30px', fontWeight: '900' }}> Status of Patient's Diagnosis :  </h1> 
           <h1 style={{ color: 'blue', fontSize: '30px', fontWeight: '900' }}>{diagnosisstatus} </h1>
         </div>
         <br />
         <br />
-        <div className="popup-inner">
-          <h1 style={{ fontSize: '30px', fontWeight: '900' }}> Detailed Medical Note for </h1>
-          <h1 style={{ color: 'blue', fontSize: '30px', fontWeight: '900' }}>{patientfirstname} </h1>
-          <h1 style={{ color: 'blue', fontSize: '30px', fontWeight: '900' }}>{patientlastname}</h1>
-          <h1 style={{ fontSize: '30px', fontWeight: '900' }}> is Shown Below:</h1>
-        </div>
+        <h1 style={{ fontSize: '30px', fontWeight: '900' }}> Detailed Medical Note for : </h1>
+        <pre> <h1 style={{ color: 'blue', fontSize: '30px', fontWeight: '900' }}>{patientfirstname}</h1> <h1 style={{ color: 'blue', fontSize: '30px', fontWeight: '900' }}>{patientlastname}</h1> </pre>
         <br />
         <br />
         <br />

@@ -144,11 +144,23 @@ const patientGridDepartment = (props) => (
 );
 
 const patientGridStatus = (props) => (
-  <div className="image flex gap-4">
-    <div>
-      <p>{props.status}</p>
-    </div>
-  </div>
+  props.status === 'Active' ? (
+    <button
+      type="button"
+      style={{ background: 'green' }}
+      className="text-white py-1 px-2 capitalize rounded-2xl text-md"
+    >
+      {props.status}
+    </button>
+  ) : (
+    <button
+      type="button"
+      style={{ background: 'Red' }}
+      className="text-white py-1 px-2 capitalize rounded-2xl text-md"
+    >
+      {props.status}
+    </button>
+  )
 );
 
 function patientGridMedicalNote(props) {
@@ -174,11 +186,23 @@ function patientGridMedicalNote(props) {
 }
 
 const patientGridDiagnosisStatus = (props) => (
-  <div className="image flex gap-4">
-    <div>
-      <p>{props.diagnosisstatus}</p>
-    </div>
-  </div>
+  props.diagnosisstatus === 'COMPLETE' ? (
+    <button
+      type="button"
+      style={{ background: 'green' }}
+      className="text-white py-1 px-2 capitalize rounded-2xl text-md"
+    >
+      {props.diagnosisstatus}
+    </button>
+  ) : (
+    <button
+      type="button"
+      style={{ background: 'Orange' }}
+      className="text-white py-1 px-2 capitalize rounded-2xl text-md"
+    >
+      {props.diagnosisstatus}
+    </button>
+  )
 );
 
 const customerGridImage2 = (props) => (
@@ -466,7 +490,7 @@ export const customersGrid = [
 
   { field: 'address',
     headerText: 'Address',
-    width: '200',
+    width: '240',
     textAlign: 'Left' },
   { field: 'gender',
     headerText: 'Gender',
@@ -525,6 +549,12 @@ export const customersGrid = [
     isPrimaryKey: true,
   },
 
+  { field: 'doctorusername',
+    headerText: 'This case is Referred to:',
+    width: '220',
+    textAlign: 'Left',
+  },
+
 ];
 
 export const employeesGrid = [
@@ -577,6 +607,10 @@ export const employeesGrid = [
 
   { field: 'doctorid',
     headerText: 'Doctor ID',
+    width: '175',
+    textAlign: 'Left' },
+  { field: 'username',
+    headerText: 'Doctor Username',
     width: '175',
     textAlign: 'Left' },
 ];

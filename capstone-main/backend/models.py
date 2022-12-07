@@ -20,6 +20,8 @@ class Patients(db.Model):
     doctorlastname = db.Column(
         db.String(80), nullable=True)
     doctorid = db.Column(db.Integer, nullable=False)
+    doctorusername = db.Column(
+        db.String(80), nullable=True)
 
     def __repr__(self):
         return f"<PatientID =  {self.patientid} >"
@@ -64,4 +66,17 @@ class User(db.Model):
 
     def save(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self, level, address, gender, age, department):
+        self.address = address
+        self.level = level
+        self.gender = gender
+        self.age = age
+        self.department = department
+
         db.session.commit()

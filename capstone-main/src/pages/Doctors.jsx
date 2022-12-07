@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { GridComponent, Inject, ColumnsDirective, ColumnDirective, Search, Page } from '@syncfusion/ej2-react-grids';
-
+import { GridComponent, Selection, Inject, ColumnsDirective, ColumnDirective, Search, Page, Edit, Toolbar, Sort, Filter, PdfExport } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-import { employeesData, employeesGrid } from '../data/dummy';
+import { employeesGrid } from '../data/dummy';
 import { Header, Navbar, Sidebar } from '../components';
 import { useStateContext } from '../contexts/ContextProvider';
 
 const Doctors = () => {
-  const toolbarOptions = ['Search'];
+  const selectionsettings = { persistSelection: true };
+  const toolbarOptions = ['Delete', 'Edit', 'Search', 'PdfExport'];
+  const searchOptions = { fields: [
+    'username',
+    'doctorid',
+  ],
+  key: '' };
+  const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY');
   const [doctors, setDoctors] = useState();
   const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog' };
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
@@ -21,16 +27,60 @@ const Doctors = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetch('/auth/doctors')
+  const requestOptionsGet = {
+    headers: {
+      'Authorization': `Bearer ${JSON.parse(token)}`,
+    },
+  };
+
+  function refreshGrid() {
+    fetch('/auth/doctors', requestOptionsGet)
       .then((res) => res.json())
       .then((data) => {
-        setDoctors(data);
-        console.log(data);
+        setDoctors({
+          result: data, // array with data to be displayed in the grid
+          count: data?.length,
+        });
       })
       .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    refreshGrid();
   }, []);
 
+  console.log('doctors', doctors);
+
+  function dataSourceChanged(state) {
+    console.log(state);
+    if (state.action === 'edit') {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
+        body: JSON.stringify(state.data),
+      };
+
+      fetch(`/auth/doctors/${state.data.doctorid}`, requestOptions)
+        .then((res) => res.json())
+        // eslint-disable-next-line no-shadow
+        .then((data) => {
+          console.log('DATA =', data);
+        })
+        .then(res => state.endEdit())
+        .catch((err) => console.log(err));
+    } else if (state.requestType === 'delete') {
+      const requestOptionsTwo = {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
+      };
+      fetch(`/auth/doctors/${state.data.doctorid}`, requestOptionsTwo)
+        .catch((err) => console.log(err));
+    }
+  }
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <div className="grid grid-cols-12 gap-20">
@@ -75,20 +125,26 @@ const Doctors = () => {
             <Header category="Page" title="Physicians" />
             <GridComponent
               dataSource={doctors}
-              width="auto"
+              // eslint-disable-next-line react/jsx-no-bind
+              dataSourceChanged={dataSourceChanged}
+              enableHover
               allowPaging
-              allowSorting
-              allowGrouping
-              pageSettings={{ pageCount: 5 }}
+              width="auto"
+              // allowGrouping
               groupSettings={{ columns: ['department'] }}
-              editSettings={editing}
+              pageSettings={{ pageCount: 5 }}
+              selectionSettings={selectionsettings}
               toolbar={toolbarOptions}
+              editSettings={editing}
+              searchSettings={searchOptions}
+              allowExcelExport
+              allowPdfExport
+              allowSorting
             >
               <ColumnsDirective>
-                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                 {employeesGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
               </ColumnsDirective>
-              <Inject services={[Search, Page]} />
+              <Inject services={[Page, Selection, Toolbar, PdfExport, Edit, Sort, Filter]} />
 
             </GridComponent>
           </div>

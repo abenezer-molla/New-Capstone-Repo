@@ -25,8 +25,8 @@ export default function InsertDataCancer() {
       doctorfirstname: data.doctorfirstname,
       doctorlastname: data.doctorlastname,
       doctorid: data.doctorid,
+      doctorusername: data.doctorusername,
     };
-
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -39,7 +39,7 @@ export default function InsertDataCancer() {
       .then((res) => res.json())
       // eslint-disable-next-line no-shadow
       .then((data) => {
-        setServerResponse(data.patientfirstname);
+        setServerResponse(data.doctorusername);
         setShow(true);
       })
       .catch((err) => console.log(err));
@@ -238,7 +238,19 @@ export default function InsertDataCancer() {
                 required
                 mt={3}
                 mb={3}
-                placeholder="Active? or Pending?"
+                placeholder="COMPLETE? or Pending?"
+              />
+            </Form.Group>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> If referral is needed, write the doctor's username for whom the referal should be redirected. If not, write N/A. </Text>
+            <Form.Group id="doctorusername">
+              <Input
+                type="doctorusername"
+                name="doctorusername"
+                {...register('doctorusername', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="Enter the Doctor Username for Whom the Referal Should be Sent To"
               />
             </Form.Group>
             <Form.Group>

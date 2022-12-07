@@ -10,6 +10,7 @@ const Patients = () => {
   const selectionsettings = { persistSelection: true };
   const toolbarOptions = ['Delete', 'Edit', 'Search', 'PdfExport'];
   const [patients, setPatients] = useState();
+  const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY');
   const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog' };
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
   useEffect(() => {
@@ -35,12 +36,15 @@ const Patients = () => {
     refreshGrid();
   }, []);
 
+  console.log('patients', patients);
+
   function dataSourceChanged(state) {
     if (state.action === 'edit') {
       const requestOptions = {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(token)}`,
         },
         body: JSON.stringify(state.data),
       };
@@ -51,22 +55,17 @@ const Patients = () => {
         .then((data) => {
           console.log('DATA =', data);
         })
-        .catch((err) => console.log(err));
-
-      fetch('/patients/patients')
-        .then((res) => res.json())
-        .then((data) => {
-          setPatients({
-            result: data, // array with data to be displayed in the grid
-            count: data?.length,
-          });
-        })
+        .then((res) => state.endEdit())
         .catch((err) => console.log(err));
     } else if (state.requestType === 'delete') {
       const requestOptionsTwo = {
         method: 'delete',
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
       };
       fetch(`/patients/patients/${state.data[0].patientid}`, requestOptionsTwo)
+        .then((res) => state.endEdit())
         .catch((err) => console.log(err));
     }
   }
@@ -131,7 +130,7 @@ const Patients = () => {
               <ColumnsDirective>
                 {customersGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
               </ColumnsDirective>
-              <Inject services={[Page, Selection, Toolbar, ExcelExport, PdfExport, Edit, Sort, Filter]} />
+              <Inject services={[Page, Selection, Toolbar, PdfExport, Edit, Sort, Filter]} />
             </GridComponent>
           </div>
         </div>

@@ -15,7 +15,7 @@ app.config.from_object(DevConfig)
 db.init_app(app)
 
 migrate = Migrate(app, db, render_as_batch=True)
-JWTManager(app)
+jwt = JWTManager(app)
 CORS(app)
 
 api = Api(app, doc='/docs')
