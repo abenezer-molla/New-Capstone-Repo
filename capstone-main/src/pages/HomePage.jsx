@@ -17,7 +17,6 @@ const HomePage = () => {
       setCurrentMode(currentThemeMode);
     }
   }, []);
-
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <div className="grid grid-cols-6 gap-4">

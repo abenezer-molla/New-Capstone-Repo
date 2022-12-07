@@ -74,6 +74,12 @@ const gridDoctorLastName = (props) => (
     <p>{props.lastname}</p>
   </div>
 );
+
+const gridDoctorEmail = (props) => (
+  <div className="flex items-center gap-2">
+    <p>{props.email}</p>
+  </div>
+);
 const gridEmployeeProfile2 = (props) => (
   <div className="flex items-center gap-2">
     <p>{props.LastName}</p>
@@ -93,6 +99,13 @@ export const EditorData = () => (
       Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
       Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </h3>
+  </div>
+);
+const patientGridCaseNumber = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.id}</p>
+    </div>
   </div>
 );
 const patientGridID = (props) => (
@@ -139,6 +152,14 @@ const patientGridDepartment = (props) => (
   <div className="image flex gap-4">
     <div>
       <p>{props.department}</p>
+    </div>
+  </div>
+);
+
+const patientGridCurrentDepartment = (props) => (
+  <div className="image flex gap-4">
+    <div>
+      <p>{props.currentdepartment}</p>
     </div>
   </div>
 );
@@ -471,6 +492,11 @@ export const LinePrimaryYAxis = {
 };
 
 export const customersGrid = [
+  { field: 'id',
+    headerText: 'Case Number',
+    width: '150',
+    template: patientGridCaseNumber,
+    textAlign: 'Left' },
   { field: 'patientid',
     headerText: 'Patient ID',
     width: '150',
@@ -506,11 +532,19 @@ export const customersGrid = [
     template: patientGridAge },
 
   { field: 'department',
-    headerText: 'Department',
-    width: '200',
+    headerText: 'Initial Admittance Department',
+    width: '230',
     format: 'yMd',
     textAlign: 'Left',
     template: patientGridDepartment },
+
+  { field: 'currentdepartment',
+    headerText: 'Current Department',
+    width: '200',
+    format: 'yMd',
+    textAlign: 'Left',
+    template: patientGridCurrentDepartment },
+
   { field: 'status',
     headerText: 'Status',
     width: '130',
@@ -558,6 +592,10 @@ export const customersGrid = [
 ];
 
 export const employeesGrid = [
+  { field: 'doctorid',
+    headerText: 'Doctor ID',
+    width: '175',
+    textAlign: 'Left' },
   { field: 'firstname',
     headerText: 'First Name',
     width: '150',
@@ -567,6 +605,11 @@ export const employeesGrid = [
     headerText: 'Last Name',
     width: '150',
     template: gridDoctorLastName,
+    textAlign: 'Left' },
+  { field: 'email',
+    headerText: 'Email',
+    width: '250',
+    template: gridDoctorEmail,
     textAlign: 'Left' },
   { field: 'username',
     headerText: 'Username',
@@ -605,10 +648,6 @@ export const employeesGrid = [
     width: '175',
     textAlign: 'Left' },
 
-  { field: 'doctorid',
-    headerText: 'Doctor ID',
-    width: '175',
-    textAlign: 'Left' },
   { field: 'username',
     headerText: 'Doctor Username',
     width: '175',
@@ -983,6 +1022,11 @@ export const userProfileData = [
 ];
 
 export const ordersGrid = [
+  { field: 'id',
+    headerText: 'Case Number',
+    width: '150',
+    template: patientGridCaseNumber,
+    textAlign: 'Left' },
   { field: 'patientid',
     headerText: 'Patient ID',
     width: '150',
@@ -1018,11 +1062,17 @@ export const ordersGrid = [
     template: patientGridAge },
 
   { field: 'department',
-    headerText: 'Department',
-    width: '200',
+    headerText: 'Initial Admittance Department',
+    width: '230',
     format: 'yMd',
     textAlign: 'Left',
     template: patientGridDepartment },
+  { field: 'currentdepartment',
+    headerText: 'Current Department',
+    width: '200',
+    format: 'yMd',
+    textAlign: 'Left',
+    template: patientGridCurrentDepartment },
   { field: 'status',
     headerText: 'Status',
     width: '130',

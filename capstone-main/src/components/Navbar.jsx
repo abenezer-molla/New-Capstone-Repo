@@ -64,13 +64,14 @@ const Navbar = () => {
               className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
               onClick={() => handleClick('userProfile')}
             >
-              <img
-                className="rounded-full w-8 h-8"
-                src={avatar}
-                alt="user-profile"
-              />
+              {/*
+                <img
+                  className="rounded-full w-8 h-8"
+                  alt="user-profile"
+                />
+              */}
               <p>
-                <span className="text-black-400 font-bold ml-1  text-14">Hi, Abenezer</span>
+                <span className="text-black-400 font-bold ml-1  text-14">Welcome</span>
               </p>
               <MdKeyboardArrowDown className="text-black-400 text-14" />
             </div>

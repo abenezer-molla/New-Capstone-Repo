@@ -11,6 +11,7 @@ patients_ns = Namespace('patients', description="A namespace for Patients")
 patients_model = patients_ns.model(
     "Patient",
     {
+        "id": fields.Integer(),
         "patientid": fields.Integer(),
         "patientfirstname": fields.String(),
         "patientlastname": fields.String(),
@@ -18,6 +19,7 @@ patients_model = patients_ns.model(
         "gender": fields.String(),
         "age": fields.Integer(),
         "department": fields.String(),
+        "currentdepartment": fields.String(),
         "status": fields.String(),
         "medicalnote": fields.String(),
         "diagnosisstatus": fields.String(),
@@ -38,7 +40,7 @@ class HelloPatient(Resource):
 @patients_ns.route('/patients/referral')
 class Referral(Resource):
     @jwt_required()
-    @patients_ns.marshal_with(patients_model)
+    @patients_ns.marshal_list_with(patients_model)
     def get(self):
         """Get all doctors """
         token = None
@@ -53,8 +55,8 @@ class Referral(Resource):
         data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
         print('data', data)
         current_user = Patients.query.filter(
-            Patients.doctorusername == data['sub']).first()
-        return [current_user]
+            Patients.doctorusername == data['sub']).all()
+        return current_user
 
 
 @patients_ns.route('/patients')
@@ -83,6 +85,7 @@ class PatientsResource(Resource):
             gender=data.get('gender'),
             age=data.get('age'),
             department=data.get('department'),
+            currentdepartment=data.get('currentdepartment'),
             status=data.get('status'),
             medicalnote=data.get('medicalnote'),
             diagnosisstatus=data.get('diagnosisstatus'),
@@ -125,6 +128,7 @@ class PatientResource(Resource):
             data.get('gender'),
             data.get('age'),
             data.get('department'),
+            data.get('currentdepartment'),
             data.get('status'),
             data.get('medicalnote'),
             data.get('diagnosisstatus'),

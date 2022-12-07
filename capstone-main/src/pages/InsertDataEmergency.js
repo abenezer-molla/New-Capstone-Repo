@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Box, Input, Center, Divider, Text, Button, PinInputField, PinInput, Stack, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, Textarea, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { Form, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 export default function InsertDataEmergency() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const { register, watch, handleSubmit, reset, formState: { errors } } = useForm();
   const [serverResponse, setServerResponse] = useState('');
-
+  const navigate = useNavigate();
   const submitForm = (data) => {
-    console.log(data);
     const body = {
       patientid: data.patientid,
       patientfirstname: data.patientfirstname,
@@ -19,12 +19,14 @@ export default function InsertDataEmergency() {
       gender: data.gender,
       medicalnote: data.medicalnote,
       age: data.age,
-      department: data.department,
+      department: 'Emergency',
+      currentdepartment: data.currentdepartment,
       status: data.status,
       diagnosisstatus: data.diagnosisstatus,
       doctorfirstname: data.doctorfirstname,
       doctorlastname: data.doctorlastname,
       doctorid: data.doctorid,
+      doctorusername: data.doctorusername,
     };
     const requestOptions = {
       method: 'POST',
@@ -44,6 +46,7 @@ export default function InsertDataEmergency() {
       .catch((err) => console.log(err));
 
     reset();
+    navigate('/patients');
   };
 
   return (
@@ -201,19 +204,19 @@ export default function InsertDataEmergency() {
               />
             </Form.Group>
             <br />
-            <Text mt={5} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Report to the Selected Department</Text>
-            <br />
-            <Form.Group id="department">
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Referral Department</Text>
+            <Form.Group id="currentdepartment">
               <Input
-                type="department"
-                name="department"
-                {...register('department', { required: true })}
+                type="currentdepartment"
+                name="currentdepartment"
+                {...register('currentdepartment', { required: true })}
                 required
                 mt={3}
                 mb={3}
-                placeholder="enter patient's department to be admitted"
+                placeholder="The department that the patient is referred to (if any). If none, put N/A."
               />
             </Form.Group>
+            <br />
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Detailed Medical Note about the Patient</Text>
             <br />
             <Form.Group id="medicalnote">
@@ -240,6 +243,20 @@ export default function InsertDataEmergency() {
                 placeholder="Active? or Pending?"
               />
             </Form.Group>
+            <br />
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> If referral is needed, write the doctor's username for whom the referal should be redirected. If not, write N/A. </Text>
+            <Form.Group id="doctorusername">
+              <Input
+                type="doctorusername"
+                name="doctorusername"
+                {...register('doctorusername', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="Enter the Doctor Username for Whom the Referal Should be Sent To"
+              />
+            </Form.Group>
+            <br />
             <Form.Group>
               <Button onClick={handleSubmit(submitForm)} mt={7} w="100%" colorScheme="blue">
                 SUBMIT

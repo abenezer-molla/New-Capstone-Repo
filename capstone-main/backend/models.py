@@ -12,6 +12,7 @@ class Patients(db.Model):
     gender = db.Column(db.String(80), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     department = db.Column(db.String(80), nullable=False)
+    currentdepartment = db.Column(db.String(80), nullable=True)
     status = db.Column(db.String(80), nullable=False)
     medicalnote = db.Column(db.String(), nullable=False)
     diagnosisstatus = db.Column(db.String(80), nullable=False)
@@ -34,13 +35,14 @@ class Patients(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, patientfirstname, patientlastname, address, gender, age, department, status, medicalnote, diagnosisstatus):
+    def update(self, patientfirstname, patientlastname, address, gender, age, department, currentdepartment, status, medicalnote, diagnosisstatus):
         self.patientfirstname = patientfirstname
         self.patientlastname = patientlastname
         self.address = address
         self.gender = gender
         self.age = age
         self.department = department
+        self.currentdepartment = currentdepartment
         self.status = status
         self.medicalnote = medicalnote
         self.diagnosisstatus = diagnosisstatus

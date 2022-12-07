@@ -136,7 +136,7 @@ const Doctors = () => {
               selectionSettings={selectionsettings}
               toolbar={toolbarOptions}
               editSettings={editing}
-              searchSettings={searchOptions}
+              // searchSettings={searchOptions}
               allowExcelExport
               allowPdfExport
               allowSorting
