@@ -55,7 +55,7 @@ class Referral(Resource):
         data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
         print('data', data)
         current_user = Patients.query.filter(
-            Patients.doctorusername == data['sub']).all()
+            Patients.doctorusername == data['sub'], Patients.diagnosisstatus != 'COMPLETE').all()
         return current_user
 
 
@@ -108,7 +108,7 @@ class PatientResource(Resource):
         """Get a patient by id """
         patients = Patients.query.filter(Patients.patientid == id).first()
 
-        return patients
+        return [patients]
 
     @patients_ns.marshal_with(patients_model)
     @jwt_required()

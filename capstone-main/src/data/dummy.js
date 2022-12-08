@@ -686,25 +686,16 @@ export const links = [
     title: 'Apps',
     links: [
       {
-        name: 'calendar',
-        icon: <AiOutlineCalendar />,
+        name: 'Doctor-Search',
+        icon: <IoMdContacts />,
       },
       {
-        name: 'kanban',
-        icon: <BsKanban />,
+        name: 'Patient-Search',
+        icon: <RiContactsLine />,
       },
       {
         name: 'editor',
         icon: <FiEdit />,
-      },
-    ],
-  },
-  {
-    title: 'Charts',
-    links: [
-      {
-        name: 'line',
-        icon: <AiOutlineStock />,
       },
     ],
   },

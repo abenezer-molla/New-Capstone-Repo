@@ -127,7 +127,7 @@ class DoctorResource(Resource):
         """Get a doctor by id """
         doctor = User.query.filter(User.doctorid == id).first()
 
-        return doctor
+        return [doctor]
 
     @auth_ns.marshal_with(doctors_model)
     @jwt_required()

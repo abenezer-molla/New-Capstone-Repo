@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Footer, ThemeSettings } from './components';
-import { HomePage, Recent, Calendar, Doctors, Patients, Kanban, Line, Editor } from './pages';
+import { HomePage, Recent, Doctors, Patients, Editor } from './pages';
 import InsertDataPedi from './pages/InsertDataPedi';
 import InsertDataGyne from './pages/InsertDataGyne';
 import InsertDataCancer from './pages/InsertDataCancer';
 import InsertDataChronic from './pages/InsertDataChronic';
 import InsertDataInfectious from './pages/InsertDataInfectious';
 import InsertDataInternalMed from './pages/InsertDataInternalMed';
+import DoctorSearch from './pages/DoctorSearch';
+import PatientSearch from './pages/PatientSearch';
 import InsertDataSurgery from './pages/InsertDataSurgery';
 import InsertDataEmergency from './pages/InsertDataEmergency';
 import PatientMedicalNote from './pages/PatientMedicalNote';
@@ -73,9 +75,9 @@ const App = (props) => {
             <Route path="/medicalnote/:id" element={<PrivateRoute><PatientMedicalNote /></PrivateRoute>} />
 
             {/* apps  */}
-            <Route path="/kanban" element={<Kanban />} />
+            <Route path="/Patient-Search" element={<PatientSearch />} />
             <Route path="/editor" element={<Editor />} />
-            <Route path="/medicalnote" patients={patients} element={<Calendar />} />
+            <Route path="/Doctor-Search" patients={patients} element={<DoctorSearch />} />
 
             {/* charts  */}
           </Routes>
