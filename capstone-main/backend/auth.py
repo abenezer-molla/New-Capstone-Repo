@@ -119,6 +119,17 @@ class SignUp(Resource):
         return make_response(jsonify({"message": "User created/registered successfuly"}), 201)
 
 
+@auth_ns.route('/doctors/<department>')
+class DoctorByDepartmentResource(Resource):
+
+    @auth_ns.marshal_with(doctors_model)
+    def get(self, department):
+        """ Get a doctors by department """
+        doctor = User.query.filter(User.department == department).all()
+        print(doctor)
+        return doctor
+
+
 @auth_ns.route('/doctors/<int:id>')
 class DoctorResource(Resource):
 

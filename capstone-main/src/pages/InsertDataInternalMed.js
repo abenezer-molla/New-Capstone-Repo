@@ -10,7 +10,6 @@ export default function InsertDataInternalMed() {
   const { register, watch, handleSubmit, reset, formState: { errors } } = useForm();
   const [serverResponse, setServerResponse] = useState('');
   const navigate = useNavigate();
-
   const submitForm = (data) => {
     const body = {
       patientid: data.patientid,

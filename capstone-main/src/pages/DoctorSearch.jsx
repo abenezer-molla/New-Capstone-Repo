@@ -29,6 +29,20 @@ const DoctorSearch = () => {
       .catch((err) => console.log(err));
     reset();
   };
+
+  const submitFormDepart = (input) => {
+    fetch(`/auth/doctors/${input.department}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setDoctorDisp({
+          result: data, // array with data to be displayed in the grid
+          count: data?.length,
+        });
+      })
+      .catch((err) => console.log(err));
+    reset();
+  };
+
   useEffect(() => {
     const currentThemeColor = localStorage.getItem('colorMode');
     const currentThemeMode = localStorage.getItem('themeMode');
@@ -45,22 +59,40 @@ const DoctorSearch = () => {
   };
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
-      <form style={{ paddingLeft: 30, paddingRight: 1500 }}>
-        <Form.Group>
+      <div style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+        <form style={{ paddingLeft: 30, paddingRight: 800 }}>
+          <Form.Group>
+            <br />
+            <br />
+            <Form.Control
+              maxLength={10}
+              type="doctorid"
+              placeholder="Enter Doctor ID to Search"
+              {...register('doctorid',{required:false,maxLength:25})}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Button as="sub" variant="primary" onClick={handleSubmit(submitForm)}>Search</Button>
+          </Form.Group>
           <br />
+        </form>
+        <form style={{ paddingLeft: 30, paddingRight: 800 }}>
+          <Form.Group>
+            <br />
+            <br />
+            <Form.Control
+              maxLength={10}
+              type="department"
+              placeholder="Enter Department to Search for Doctors With in the Given Department."
+              {...register('department',{required:false,maxLength:25})}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Button as="sub" variant="primary" onClick={handleSubmit(submitFormDepart)}>Search</Button>
+          </Form.Group>
           <br />
-          <Form.Control
-            maxLength={10}
-            type="doctorid"
-            placeholder="Enter Doctor ID to Search"
-            {...register('doctorid',{required:true,maxLength:25})}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Button as="sub" variant="primary" onClick={handleSubmit(submitForm)}>Search</Button>
-        </Form.Group>
-        <br />
-      </form>
+        </form>
+      </div>
       <div className="grid grid-cols-12 gap-20">
         <div className="flex relative dark:bg-main-dark-bg">
           <div className="fixed right-10 bottom-4" style={{ zIndex: '1000' }}>
@@ -100,7 +132,7 @@ const DoctorSearch = () => {
             </div>
           </div>
           <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-            <Header category="Page" title="Search a Doctor by Doctor's ID" />
+            <Header category="Page" title="Search a Doctor/Doctors by ID or Department" />
             <GridComponent
               id="gridcomp"
               dataSource={doctorDisplay}

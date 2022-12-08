@@ -23,7 +23,6 @@ export default function Login() {
       .then((res) => res.json())
       .then((data) => {
         if (data.access_token) {
-          console.log('DATAAAAAAA', data);
           login(data.access_token);
           navigate('/HomePage');
         } else {
