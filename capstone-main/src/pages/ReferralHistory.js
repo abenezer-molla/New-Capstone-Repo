@@ -8,7 +8,7 @@ import { contextMenuItems, customersGrid } from '../data/dummy';
 import { Header, Navbar, Sidebar } from '../components';
 import { useStateContext } from '../contexts/ContextProvider';
 
-const PatientSearch = () => {
+const ReferralHistory = () => {
   const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog' };
   const [show, setShow] = React.useState(false);
   const selectionsettings = { persistSelection: true };
@@ -18,7 +18,7 @@ const PatientSearch = () => {
   const { register, reset, handleSubmit, formState: { errors } } = useForm();
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
   const submitForm = (input) => {
-    fetch(`/patients/patients/${input.patientid}`)
+    fetch(`/referrals/referrals/${input.patientid}`)
       .then((res) => res.json())
       .then((data) => {
         setPatientDisp({
@@ -37,6 +37,8 @@ const PatientSearch = () => {
       setCurrentMode(currentThemeMode);
     }
   }, []);
+
+  console.log('patientDisplay', patientDisplay);
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <form style={{ paddingLeft: 30, paddingRight: 1500 }}>
@@ -104,7 +106,6 @@ const PatientSearch = () => {
               allowPdfExport
               selectionSettings={selectionsettings}
               toolbar={toolbarOptions}
-              // eslint-disable-next-line react/jsx-no-bind
               contextMenuItems={contextMenuItems}
               editSettings={editing}
             >
@@ -120,4 +121,4 @@ const PatientSearch = () => {
     </div>
   );
 };
-export default PatientSearch;
+export default ReferralHistory;

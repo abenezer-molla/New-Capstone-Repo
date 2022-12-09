@@ -27,6 +27,7 @@ export default function InsertDataCancer() {
       doctorlastname: data.doctorlastname,
       doctorid: data.doctorid,
       doctorusername: data.doctorusername,
+      date: new Date(),
     };
     const requestOptions = {
       method: 'POST',
@@ -37,6 +38,15 @@ export default function InsertDataCancer() {
     };
 
     fetch('/patients/patients', requestOptions)
+      .then((res) => res.json())
+      // eslint-disable-next-line no-shadow
+      .then((data) => {
+        setServerResponse('Data Submitted Successfully');
+        setShow(true);
+      })
+      .catch((err) => console.log(err));
+
+    fetch('/referrals/referrals', requestOptions)
       .then((res) => res.json())
       // eslint-disable-next-line no-shadow
       .then((data) => {

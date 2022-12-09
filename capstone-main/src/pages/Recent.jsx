@@ -44,22 +44,20 @@ const Recent = () => {
 
   function dataSourceChanged(state) {
     if (state.action === 'edit') {
-      const requestOptions = {
-        method: 'PUT',
+      const requestOptionsTwo = {
+        method: 'POST',
         headers: {
           'content-type': 'application/json',
-          'Authorization': `Bearer ${JSON.parse(token)}`,
         },
         body: JSON.stringify(state.data),
       };
-
-      fetch(`/patients/patients/${state.data.patientid}`, requestOptions)
+      fetch('/referrals/referrals', requestOptionsTwo)
         .then((res) => res.json())
         // eslint-disable-next-line no-shadow
         .then((data) => {
-          console.log('DATA =', data);
+          setServerResponse('Data Submitted Successfully');
+          setShow(true);
         })
-        .then((res) => state.endEdit())
         .catch((err) => console.log(err));
     } else if (state.requestType === 'delete') {
       const requestOptionsTwo = {

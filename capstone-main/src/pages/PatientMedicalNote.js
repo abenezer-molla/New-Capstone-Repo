@@ -13,7 +13,7 @@ const PatientMedicalNote = () => {
   const { diagnosisstatus, patientfirstname, patientlastname, patientid, medicalnote } = location.state;
   const ordersData = [
     {
-      diagnosisstatus,
+      patientid,
       medicalnote,
     },
   ];
@@ -114,8 +114,8 @@ const PatientMedicalNote = () => {
               editSettings={editing}
             >
               <ColumnsDirective>
-                <ColumnDirective headerText="Diagnosis Status" field="diagnosisstatus" width="150" textAlign="Right" />
-                <ColumnDirective headerText="Medical Note" field="medicalnote" width="400" />
+                <ColumnDirective headerText="Patient ID" field="patientid" width="150" textAlign="Right" />
+                <ColumnDirective headerText="Medical Note" field="medicalnote" width="600" />
               </ColumnsDirective>
               <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport, Selection, Toolbar]} />
             </GridComponent>
@@ -124,6 +124,8 @@ const PatientMedicalNote = () => {
               <h1 style={{ fontSize: '14px' }}>Medical Note For: <br /> <pre> {patientfirstname} {patientlastname}</pre></h1>
               <br />
               <h1>Patient ID: {patientid} </h1>
+              <br />
+              <h1>Diagnosis Status: {diagnosisstatus} </h1>
               <br />
               <text> {medicalnote} </text>
             </div>

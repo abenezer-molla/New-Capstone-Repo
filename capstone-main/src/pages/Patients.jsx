@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GridComponent, ColumnsDirective, ColumnDirective, Page, PdfExport, ExcelExport, Selection, Inject, Edit, Toolbar, Sort, Filter, ToolbarItems } from '@syncfusion/ej2-react-grids';
+import { GridComponent, ColumnsDirective, ColumnDirective, Page, PdfExport, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { FiSettings } from 'react-icons/fi';
 import { customersGrid } from '../data/dummy';
@@ -37,38 +37,6 @@ const Patients = () => {
   }, []);
 
   console.log('patients', patients);
-
-  function dataSourceChanged(state) {
-    if (state.action === 'edit') {
-      const requestOptions = {
-        method: 'PUT',
-        headers: {
-          'content-type': 'application/json',
-          'Authorization': `Bearer ${JSON.parse(token)}`,
-        },
-        body: JSON.stringify(state.data),
-      };
-
-      fetch(`/patients/patients/${state.data.patientid}`, requestOptions)
-        .then((res) => res.json())
-        // eslint-disable-next-line no-shadow
-        .then((data) => {
-          console.log('DATA =', data);
-        })
-        .then((res) => state.endEdit())
-        .catch((err) => console.log(err));
-    } else if (state.requestType === 'delete') {
-      const requestOptionsTwo = {
-        method: 'delete',
-        headers: {
-          'Authorization': `Bearer ${JSON.parse(token)}`,
-        },
-      };
-      fetch(`/patients/patients/${state.data[0].patientid}`, requestOptionsTwo)
-        .then((res) => state.endEdit())
-        .catch((err) => console.log(err));
-    }
-  }
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <div className="grid grid-cols-12 gap-20">
@@ -112,14 +80,14 @@ const Patients = () => {
           <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
             <Header category="Page" title="Patients" />
             <GridComponent
+              id="aben"
               dataSource={patients}
               // eslint-disable-next-line react/jsx-no-bind
-              dataSourceChanged={dataSourceChanged}
               enableHover
               allowPaging
               // allowGrouping
               groupSettings={{ columns: ['department'] }}
-              pageSettings={{ pageCount: 5 }}
+              pageSettings={{ pageSize: 1000, pageSizes: true }}
               selectionSettings={selectionsettings}
               toolbar={toolbarOptions}
               editSettings={editing}
@@ -130,7 +98,7 @@ const Patients = () => {
               <ColumnsDirective>
                 {customersGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
               </ColumnsDirective>
-              <Inject services={[Page, Selection, Toolbar, PdfExport, Edit, Sort, Filter]} />
+              <Inject services={[Page, Selection, Toolbar, PdfExport, Edit, Sort]} />
             </GridComponent>
           </div>
         </div>
@@ -138,5 +106,4 @@ const Patients = () => {
     </div>
   );
 };
-
 export default Patients;

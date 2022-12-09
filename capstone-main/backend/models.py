@@ -1,3 +1,4 @@
+from datetime import datetime
 from exts import db
 
 # Table that stored the very important data of each user.
@@ -10,7 +11,7 @@ class Patients(db.Model):
     patientlastname = db.Column(db.String(80), nullable=False)
     address = db.Column(db.String(80), nullable=False)
     gender = db.Column(db.String(80), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
+    age = db.Column(db.String(80), nullable=False)
     department = db.Column(db.String(80), nullable=False)
     currentdepartment = db.Column(db.String(80), nullable=True)
     status = db.Column(db.String(80), nullable=False)
@@ -23,6 +24,8 @@ class Patients(db.Model):
     doctorid = db.Column(db.Integer, nullable=False)
     doctorusername = db.Column(
         db.String(80), nullable=True)
+    date = db.Column(
+        db.DateTime)
 
     def __repr__(self):
         return f"<PatientID =  {self.patientid} >"
@@ -46,6 +49,40 @@ class Patients(db.Model):
         self.status = status
         self.medicalnote = medicalnote
         self.diagnosisstatus = diagnosisstatus
+        self.date = datetime.utcnow()
+
+        db.session.commit()
+
+
+class ReferralHistory(db.Model):
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    patientid = db.Column(db.Integer, nullable=False)
+    patientfirstname = db.Column(db.String(80), nullable=False)
+    patientlastname = db.Column(db.String(80), nullable=False)
+    address = db.Column(db.String(80), nullable=False)
+    gender = db.Column(db.String(80), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    department = db.Column(db.String(80), nullable=False)
+    currentdepartment = db.Column(db.String(80), nullable=False)
+    status = db.Column(db.String(80), nullable=False)
+    medicalnote = db.Column(db.String(), nullable=False)
+    diagnosisstatus = db.Column(db.String(80), nullable=False)
+    doctorfirstname = db.Column(
+        db.String(80), nullable=False)
+    doctorlastname = db.Column(
+        db.String(80), nullable=False)
+    doctorid = db.Column(db.Integer, nullable=False)
+    doctorusername = db.Column(
+        db.String(80), nullable=False)
+    date = db.Column(
+        db.DateTime)
+
+    def __repr__(self):
+        return f"<PatientID =  {self.patientid} >"
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
         db.session.commit()
 

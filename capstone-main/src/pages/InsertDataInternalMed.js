@@ -44,6 +44,15 @@ export default function InsertDataInternalMed() {
         setShow(true);
       })
       .catch((err) => console.log(err));
+    
+    fetch('/referrals/referrals', requestOptions)
+      .then((res) => res.json())
+      // eslint-disable-next-line no-shadow
+      .then((data) => {
+        setServerResponse('Data Submitted Successfully');
+        setShow(true);
+      })
+      .catch((err) => console.log(err));
 
     reset();
     navigate('/patients');

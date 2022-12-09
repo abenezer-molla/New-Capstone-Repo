@@ -16,7 +16,7 @@ import PatientMedicalNote from './pages/PatientMedicalNote';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import PrivateRoute from './pages/PrivateRoute';
-
+import ReferralHistory from './pages/ReferralHistory';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
@@ -78,6 +78,7 @@ const App = (props) => {
             <Route path="/Patient-Search" element={<PatientSearch />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/Doctor-Search" patients={patients} element={<DoctorSearch />} />
+            <Route path="/Referral-History" element={<ReferralHistory />} />
 
             {/* charts  */}
           </Routes>

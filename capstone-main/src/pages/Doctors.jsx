@@ -132,7 +132,7 @@ const Doctors = () => {
               width="auto"
               // allowGrouping
               groupSettings={{ columns: ['department'] }}
-              pageSettings={{ pageCount: 5 }}
+              pageSettings={{ pageSize: 1000, pageSizes: true }}
               selectionSettings={selectionsettings}
               toolbar={toolbarOptions}
               editSettings={editing}

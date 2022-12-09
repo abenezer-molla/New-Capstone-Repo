@@ -4,7 +4,90 @@ from flask_jwt_extended import jwt_required
 import jwt
 from config import Config
 from models import User
+from models import ReferralHistory
 from flask import request, jsonify
+from datetime import datetime
+
+referral_ns = Namespace(
+    'referrals', description="A namespace for History of Referrals")
+
+referral_model = referral_ns.model(
+    "Referrals",
+    {
+        "id": fields.Integer(),
+        "patientid": fields.Integer(),
+        "patientfirstname": fields.String(),
+        "patientlastname": fields.String(),
+        "address": fields.String(),
+        "gender": fields.String(),
+        "age": fields.Integer(),
+        "department": fields.String(),
+        "currentdepartment": fields.String(),
+        "status": fields.String(),
+        "medicalnote": fields.String(),
+        "diagnosisstatus": fields.String(),
+        "doctorfirstname": fields.String(),
+        "doctorlastname": fields.String(),
+        "doctorid": fields.Integer(),
+        "doctorusername": fields.String(),
+        "date": fields.DateTime(dt_format='rfc822'),
+    }
+)
+
+
+@referral_ns.route('/referrals')
+class ReferralResource(Resource):
+
+    @referral_ns.marshal_list_with(referral_model)
+    def get(self):
+        """Get all patients """
+
+        patients = Patients.query.filter(
+            Patients.doctorusername != None, Patients.doctorusername != 'N/A', Patients.doctorusername != 'NA').all()
+
+        return patients
+
+    @referral_ns.marshal_with(referral_model)
+    @referral_ns.expect(referral_model)
+    def post(self):
+        """Create a new Patient Referrals History"""
+
+        data = request.get_json()
+
+        new_patient = ReferralHistory(
+            patientid=data.get('patientid'),
+            patientfirstname=data.get('patientfirstname'),
+            patientlastname=data.get('patientlastname'),
+            address=data.get('address'),
+            gender=data.get('gender'),
+            age=data.get('age'),
+            department=data.get('department'),
+            currentdepartment=data.get('currentdepartment'),
+            status=data.get('status'),
+            medicalnote=data.get('medicalnote'),
+            diagnosisstatus=data.get('diagnosisstatus'),
+            doctorfirstname=data.get('doctorfirstname'),
+            doctorlastname=data.get('doctorlastname'),
+            doctorid=data.get('doctorid'),
+            doctorusername=data.get('doctorusername'),
+            date=data.get('date')
+        )
+
+        new_patient.save()
+
+        return new_patient, 201
+
+
+@referral_ns.route('/referrals/<int:id>')
+class ReferralResource(Resource):
+
+    @referral_ns.marshal_with(referral_model)
+    def get(self, id):
+        """Get a Referrals by id """
+        patients = ReferralHistory.query.filter(
+            ReferralHistory.patientid == id).all()
+        return patients
+
 
 patients_ns = Namespace('patients', description="A namespace for Patients")
 
@@ -27,6 +110,7 @@ patients_model = patients_ns.model(
         "doctorlastname": fields.String(),
         "doctorid": fields.Integer(),
         "doctorusername": fields.String(),
+        "date": fields.DateTime(dt_format='rfc822'),
     }
 )
 
@@ -92,7 +176,8 @@ class PatientsResource(Resource):
             doctorfirstname=data.get('doctorfirstname'),
             doctorlastname=data.get('doctorlastname'),
             doctorid=data.get('doctorid'),
-            doctorusername=data.get('doctorusername')
+            doctorusername=data.get('doctorusername'),
+            date=data.get('date')
         )
 
         new_patient.save()
@@ -115,26 +200,6 @@ class PatientResource(Resource):
     def put(self, id):
         """Update a patient by id """
         print('Here', Patients.query.all(), id)
-
-        patient_data_to_update = Patients.query.filter(
-            Patients.patientid == id).first()
-
-        data = request.get_json()
-
-        patient_data_to_update.update(
-            data.get('patientfirstname'),
-            data.get('patientlastname'),
-            data.get('address'),
-            data.get('gender'),
-            data.get('age'),
-            data.get('department'),
-            data.get('currentdepartment'),
-            data.get('status'),
-            data.get('medicalnote'),
-            data.get('diagnosisstatus'),
-        )
-
-        return patient_data_to_update
 
     @patients_ns.marshal_with(patients_model)
     @jwt_required()

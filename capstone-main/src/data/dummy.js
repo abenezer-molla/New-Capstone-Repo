@@ -588,6 +588,11 @@ export const customersGrid = [
     width: '220',
     textAlign: 'Left',
   },
+  { field: 'date',
+  headerText: 'Date of Submission',
+  width: '230',
+  textAlign: 'Left',
+},
 
 ];
 
@@ -692,6 +697,10 @@ export const links = [
       {
         name: 'Patient-Search',
         icon: <RiContactsLine />,
+      },
+      {
+        name: 'Referral-History',
+        icon: <FiBookOpen />,
       },
       {
         name: 'editor',
