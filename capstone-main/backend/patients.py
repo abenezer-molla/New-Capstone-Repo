@@ -106,9 +106,9 @@ class PatientResource(Resource):
     @patients_ns.marshal_with(patients_model)
     def get(self, id):
         """Get a patient by id """
-        patients = Patients.query.filter(Patients.patientid == id).first()
+        patients = Patients.query.filter(Patients.patientid == id).all()
 
-        return [patients]
+        return patients
 
     @patients_ns.marshal_with(patients_model)
     @jwt_required()

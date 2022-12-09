@@ -32,7 +32,7 @@ export default function Login() {
     reset();
   };
   return (
-    <Box h="calc(130vh)" w="100%">
+    <Box h="calc(80vh)" w="100%">
       <Center w="50%" h="100%">
         <Box w="70%">
           <Text fontSize="6xl" mt={3} style={{ lineHeight: '200%', fontWeight: 'bolder' }}>
