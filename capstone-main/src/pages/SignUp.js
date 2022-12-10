@@ -13,16 +13,6 @@ export default function SignUp() {
   const { register, watch, handleSubmit, reset, formState: { errors } } = useForm();
   const [serverResponse, setServerResponse] = useState('');
 
-  useEffect(() => {
-    fetch('/patients/patients')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        { /*  setMessage(data.patientfirstname);  */ }
-      })
-      .catch(err => console.log(err));
-  }, []);
-
   const [message, setMessage] = useState('');
 
   const submitForm = (data) => {
@@ -38,7 +28,6 @@ export default function SignUp() {
         level: data.level,
         gender: data.gender,
         age: data.age,
-        doctorID: data.doctorid,
         department: data.department,
 
       };
@@ -53,7 +42,7 @@ export default function SignUp() {
         body: JSON.stringify(body),
       };
 
-      fetch('/auth/signup', requestOptions)
+      fetch('/auth/doctors', requestOptions)
         .then((res) => res.json())
         // eslint-disable-next-line no-shadow
         .then((data) => {
@@ -241,18 +230,6 @@ export default function SignUp() {
                 />
               </Form.Group>
               <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>
-              <br />
-              <Form.Group id="doctorid">
-                <Input
-                  type="doctorid"
-                  name="doctorid"
-                  {...register('doctorid', { required: true })}
-                  required
-                  mt={3}
-                  mb={3}
-                  placeholder="enter your id"
-                />
-              </Form.Group>
               <br />
               {/*
               <Form.Group id="datepicker">

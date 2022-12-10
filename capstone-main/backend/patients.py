@@ -30,7 +30,7 @@ referral_model = referral_ns.model(
         "doctorlastname": fields.String(),
         "doctorid": fields.Integer(),
         "doctorusername": fields.String(),
-        "date": fields.DateTime(dt_format='rfc822'),
+        "date": fields.String(),
     }
 )
 
@@ -110,7 +110,7 @@ patients_model = patients_ns.model(
         "doctorlastname": fields.String(),
         "doctorid": fields.Integer(),
         "doctorusername": fields.String(),
-        "date": fields.DateTime(dt_format='rfc822'),
+        "date": fields.String(),
     }
 )
 
@@ -200,6 +200,27 @@ class PatientResource(Resource):
     def put(self, id):
         """Update a patient by id """
         print('Here', Patients.query.all(), id)
+        patient_data_to_update = Patients.query.filter(
+            Patients.patientid == id).first()
+        data = request.get_json()
+
+        patient_data_to_update.update(
+            data.get('patientfirstname'),
+            data.get('patientlastname'),
+            data.get('address'),
+            data.get('gender'),
+            data.get('age'),
+            data.get('department'),
+            data.get('currentdepartment'),
+            data.get('status'),
+            data.get('medicalnote'),
+            data.get('diagnosisstatus'),
+            data.get('doctorfirstname'),
+            data.get('doctorlastname'),
+            data.get('date'),
+        )
+
+        return patient_data_to_update
 
     @patients_ns.marshal_with(patients_model)
     @jwt_required()

@@ -36,7 +36,38 @@ const Patients = () => {
     refreshGrid();
   }, []);
 
-  console.log('patients', patients);
+  function dataSourceChanged(state) {
+    if (state.action === 'delete') {
+      const requestOptionsTwo = {
+        method: 'delete',
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
+      };
+      fetch(`/patients/patients/${state.data[0].patientid}`, requestOptionsTwo)
+        .then((res) => state.endEdit())
+        .catch((err) => console.log(err));
+    } else if (state.action === 'edit') {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
+        body: JSON.stringify(state.data),
+      };
+
+      fetch(`/patients/patients/${state.data.patientid}`, requestOptions)
+        .then((res) => res.json())
+        .then((res) => state.endEdit())
+        // eslint-disable-next-line no-shadow
+        .then((data) => {
+          console.log('DATA =', data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <div className="grid grid-cols-12 gap-20">
@@ -87,6 +118,8 @@ const Patients = () => {
               allowPaging
               // allowGrouping
               groupSettings={{ columns: ['department'] }}
+              // eslint-disable-next-line react/jsx-no-bind
+              dataSourceChanged={dataSourceChanged}
               pageSettings={{ pageSize: 1000, pageSizes: true }}
               selectionSettings={selectionsettings}
               toolbar={toolbarOptions}

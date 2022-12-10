@@ -96,7 +96,7 @@ const PatientMedicalNote = () => {
             </div>
           </div>
           <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-            <Header category="Page" title="Referrals for Current User" />
+            <Header category="Page" title="Medical Note of a Patient" />
             <h1> THE TABLE BELOW CAN BE EXPORTED AS PDF. </h1>
             <br />
             <GridComponent

@@ -44,6 +44,22 @@ const Recent = () => {
 
   function dataSourceChanged(state) {
     if (state.action === 'edit') {
+      const requestOptionsThree = {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
+        body: JSON.stringify(state.data),
+      };
+      fetch(`/patients/patients/${state.data.patientid}`, requestOptionsThree)
+        .then((res) => res.json())
+        .then((res) => state.endEdit())
+        // eslint-disable-next-line no-shadow
+        .then((data) => {
+          console.log('DATA =', data);
+        })
+        .catch((err) => console.log(err));
       const requestOptionsTwo = {
         method: 'POST',
         headers: {

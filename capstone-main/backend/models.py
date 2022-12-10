@@ -25,7 +25,7 @@ class Patients(db.Model):
     doctorusername = db.Column(
         db.String(80), nullable=True)
     date = db.Column(
-        db.DateTime)
+        db.String(80))
 
     def __repr__(self):
         return f"<PatientID =  {self.patientid} >"
@@ -38,7 +38,7 @@ class Patients(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, patientfirstname, patientlastname, address, gender, age, department, currentdepartment, status, medicalnote, diagnosisstatus):
+    def update(self, patientfirstname, patientlastname, address, gender, age, department, currentdepartment, status, medicalnote, diagnosisstatus, doctorfirstname, doctorlastname, date):
         self.patientfirstname = patientfirstname
         self.patientlastname = patientlastname
         self.address = address
@@ -49,7 +49,9 @@ class Patients(db.Model):
         self.status = status
         self.medicalnote = medicalnote
         self.diagnosisstatus = diagnosisstatus
-        self.date = datetime.utcnow()
+        self.doctorfirstname = doctorfirstname
+        self.doctorlastname = doctorlastname
+        self.date = date
 
         db.session.commit()
 
@@ -75,7 +77,7 @@ class ReferralHistory(db.Model):
     doctorusername = db.Column(
         db.String(80), nullable=False)
     date = db.Column(
-        db.DateTime)
+        db.String(80))
 
     def __repr__(self):
         return f"<PatientID =  {self.patientid} >"

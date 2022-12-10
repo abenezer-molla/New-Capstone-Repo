@@ -52,7 +52,6 @@ export default function Login() {
               placeholder="enter your username"
             />
           </Form.Group>
-          <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>
           <br />
           <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Password</Text>
           <br />

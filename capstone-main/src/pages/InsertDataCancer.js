@@ -266,6 +266,20 @@ export default function InsertDataCancer() {
               />
             </Form.Group>
             <br />
+
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Current Date </Text>
+            <Form.Group id="date">
+              <Input
+                type="date"
+                name="date"
+                {...register('date', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="MM/DD/YYYY"
+              />
+            </Form.Group>
+            <br />
             <Form.Group>
               <Button onClick={handleSubmit(submitForm)} mt={7} w="100%" colorScheme="blue">
                 SUBMIT
