@@ -22,7 +22,6 @@ import './App.css';
 import { useStateContext } from './contexts/ContextProvider';
 
 const App = (props) => {
-  const { isLoggedIn } = props;
   const { setCurrentColor, setCurrentMode, currentMode, themeSettings } = useStateContext();
   const [patients, setPatients] = useState();
   useEffect(() => {
@@ -33,9 +32,6 @@ const App = (props) => {
       setCurrentMode(currentThemeMode);
     }
   }, []);
-  if (!isLoggedIn) {
-    return <SignUp />;
-  }
 
   useEffect(() => {
     fetch('/patients/patients')
@@ -55,7 +51,7 @@ const App = (props) => {
 
           <Routes>
             {/* dashboard  */}
-            <Route path="/HomePage" element={<HomePage />} />
+            <Route path="/HomePage" element={<PrivateRoute><HomePage /></PrivateRoute>} />
 
             {/* pages  */}
             <Route path="/Referrals" element={<PrivateRoute><Recent /></PrivateRoute>} />

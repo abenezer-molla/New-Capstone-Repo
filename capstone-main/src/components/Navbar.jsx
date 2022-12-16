@@ -50,6 +50,7 @@ const Navbar = () => {
   }, [screenSize]);
 
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
+  const handleLogout = () => localStorage.setItem('REACT_TOKEN_AUTH_KEY', null);
 
   return (
     <div className="flex relative">
@@ -87,7 +88,7 @@ const Navbar = () => {
             to="/login"
             key="login"
           >
-            <Button mt={2} w="100%" colorScheme="blue">
+            <Button onClick={handleLogout} mt={2} w="100%" colorScheme="blue">
               LOGOUT
             </Button>
           </NavLink>
