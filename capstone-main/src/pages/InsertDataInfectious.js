@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Input, Center, Divider, Text, Button, PinInputField, PinInput, Stack, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, Textarea, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Box, Input, Center, Divider, Text, Button, Textarea } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { Form, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 export default function InsertDatainfectious() {
   const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
   const { register, watch, handleSubmit, reset, formState: { errors } } = useForm();
   const [serverResponse, setServerResponse] = useState('');
   const navigate = useNavigate();
@@ -249,7 +248,7 @@ export default function InsertDatainfectious() {
                 required
                 mt={3}
                 mb={3}
-                placeholder="Active? or Pending?"
+                placeholder="Put either COMPLETE or PENDING"
               />
             </Form.Group>
             <br />
@@ -263,6 +262,20 @@ export default function InsertDatainfectious() {
                 mt={3}
                 mb={3}
                 placeholder="Enter the Doctor Username for Whom the Referal Should be Sent To"
+              />
+            </Form.Group>
+            <br />
+
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Current Date </Text>
+            <Form.Group id="date">
+              <Input
+                type="date"
+                name="date"
+                {...register('date', { required: true })}
+                required
+                mt={3}
+                mb={3}
+                placeholder="MM/DD/YYYY"
               />
             </Form.Group>
             <br />

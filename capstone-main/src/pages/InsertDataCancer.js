@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Input, Center, Divider, Text, Button, PinInputField, PinInput, Stack, NumberInput, HStack, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, Select, Textarea, FormControl, Switch, FormLabel, SimpleGrid } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Box, Input, Center, Divider, Text, Button, Textarea } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Form, Alert } from 'react-bootstrap';
 
 export default function InsertDataCancer() {
   const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
-  const { register, watch, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [serverResponse, setServerResponse] = useState('');
   const navigate = useNavigate();
   const submitForm = (data) => {
@@ -249,7 +248,7 @@ export default function InsertDataCancer() {
                 required
                 mt={3}
                 mb={3}
-                placeholder="COMPLETE? or Pending?"
+                placeholder="Put either COMPLETE or PENDING"
               />
             </Form.Group>
             <br />
