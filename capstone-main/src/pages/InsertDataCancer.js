@@ -161,32 +161,29 @@ export default function InsertDataCancer() {
                 placeholder="enter patient's address"
               />
             </Form.Group>
+
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Status</Text>
-            <Form.Group id="status">
-              <Input
-                type="status"
-                name="status"
-                {...register('status', { required: true })}
-                required
-                mt={3}
-                mb={3}
-                placeholder="enter patient's status"
-              />
-            </Form.Group>
-            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Gender</Text>
-            <Form.Group id="gender">
-              <Input
-                type="gender"
-                name="gender"
-                {...register('gender', { required: true })}
-                required
-                mt={3}
-                mb={3}
-                placeholder="enter patient's gender"
-              />
-            </Form.Group>
-            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Age </Text>
             <br />
+            <Form.Group id="status">
+              <Form.Select {...register('status', { required: true })} id="status">
+                <option>Select Status</option>
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="DECEASED">DECEASED</option>
+              </Form.Select>
+            </Form.Group>
+            <br />
+
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Gender</Text>
+            <br />
+            <Form.Group id="gender">
+              <Form.Select {...register('gender', { required: true })} id="gender">
+                <option>Select Gender</option>
+                <option value="MALE">MALE</option>
+                <option value="FEMALE">FEMALE</option>
+              </Form.Select>
+            </Form.Group>
+            <br />
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Age </Text>
             <Form.Group id="age">
               <Input
                 type="age"
@@ -200,7 +197,6 @@ export default function InsertDataCancer() {
             </Form.Group>
 
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Patient's ID </Text>
-            <br />
             <Form.Group id="patientid">
               <Input
                 type="patientid"
@@ -226,7 +222,6 @@ export default function InsertDataCancer() {
               />
             </Form.Group>
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Detailed Medical Note about the Patient</Text>
-            <br />
             <Form.Group id="medicalnote">
               <Textarea
                 type="medicalnote"
@@ -240,16 +235,13 @@ export default function InsertDataCancer() {
             </Form.Group>
             <br />
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Diagnosis and/or Medical Note Status</Text>
+            <br />
             <Form.Group id="diagnosisstatus">
-              <Input
-                type="diagnosisstatus"
-                name="diagnosisstatus"
-                {...register('diagnosisstatus', { required: true })}
-                required
-                mt={3}
-                mb={3}
-                placeholder="Put either COMPLETE or PENDING"
-              />
+              <Form.Select {...register('diagnosisstatus', { required: true })} id="diagnosisstatus" aria-label="Diagnosis Status">
+                <option>Select Diagnosis Status</option>
+                <option value="COMPLETE">COMPLETE</option>
+                <option value="PENDING">PENDING</option>
+              </Form.Select>
             </Form.Group>
             <br />
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> If referral is needed, write the doctor's username for whom the referal should be redirected. If not, write N/A. </Text>
