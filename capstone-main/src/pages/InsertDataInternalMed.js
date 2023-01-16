@@ -210,17 +210,21 @@ export default function InsertDataInternalMed() {
             </Form.Group>
             <br />
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Referral Department </Text>
+            <br />
             <Form.Group id="currentdepartment">
-              <Input
-                type="currentdepartment"
-                name="currentdepartment"
-                {...register('currentdepartment', { required: true })}
-                required
-                mt={3}
-                mb={3}
-                placeholder="The department that the patient is referred to (if any). If none, put N/A."
-              />
+              <Form.Select {...register('currentdepartment', { required: true })} id="currentdepartment">
+                <option>Select Department</option>
+                <option value="Internal Medicine">Internal Medicine</option>
+                <option value="Chronic Illness">Chronic Illness</option>
+                <option value="Pediatrics">Pediatrics</option>
+                <option value="Surgery">Surgery</option>
+                <option value="Infectious Diseases">Infectious Diseases</option>
+                <option value="FEMCancerALE">Cancer</option>
+                <option value="Obstetrics and Gyne">Obstetrics and Gyne</option>
+                <option value="Emegency">Emegency</option>
+              </Form.Select>
             </Form.Group>
+            <br />
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Detailed Medical Note about the Patient</Text>
             <Form.Group id="medicalnote">
               <Textarea
