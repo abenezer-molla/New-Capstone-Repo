@@ -50,7 +50,10 @@ const Navbar = () => {
   }, [screenSize]);
 
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
-  const handleLogout = () => localStorage.setItem('REACT_TOKEN_AUTH_KEY', null);
+  const handleLogout = () => {
+    localStorage.setItem('REACT_TOKEN_AUTH_KEY', null);
+    console.log(localStorage.getItem('REACT_TOKEN_AUTH_KEY'));
+  }
 
   return (
     <div className="flex relative">

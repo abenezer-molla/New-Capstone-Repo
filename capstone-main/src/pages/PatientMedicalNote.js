@@ -115,6 +115,8 @@ const PatientMedicalNote = () => {
             >
               <ColumnsDirective>
                 <ColumnDirective headerText="Patient ID" field="patientid" width="150" textAlign="Right" />
+                <ColumnDirective headerText="Patient Firstname" field="patientfirstname" width="150" textAlign="Right" />
+                <ColumnDirective headerText="Patient Lastname" field="patientlastname" width="150" textAlign="Right" />
                 <ColumnDirective headerText="Medical Note" field="medicalnote" width="600" />
               </ColumnsDirective>
               <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport, Selection, Toolbar]} />

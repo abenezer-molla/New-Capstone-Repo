@@ -21,7 +21,7 @@ import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
 
-const App = (props) => {
+const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, themeSettings } = useStateContext();
   const [patients, setPatients] = useState();
   useEffect(() => {
@@ -51,7 +51,7 @@ const App = (props) => {
 
           <Routes>
             {/* dashboard  */}
-            <Route path="/HomePage" element={<PrivateRoute><HomePage /></PrivateRoute>} />
+            <Route path="/HomePage" element={<HomePage />} />
 
             {/* pages  */}
             <Route path="/Referrals" element={<PrivateRoute><Recent /></PrivateRoute>} />
@@ -71,10 +71,10 @@ const App = (props) => {
             <Route path="/medicalnote/:id" element={<PrivateRoute><PatientMedicalNote /></PrivateRoute>} />
 
             {/* apps  */}
-            <Route path="/Patient-Search" element={<PatientSearch />} />
-            <Route path="/editor" element={<Editor />} />
-            <Route path="/Doctor-Search" patients={patients} element={<DoctorSearch />} />
-            <Route path="/Referral-History" element={<ReferralHistory />} />
+            <Route path="/Patient-Search" element={<PrivateRoute><PatientSearch /></PrivateRoute>} />
+            <Route path="/editor" element={<PrivateRoute><Editor /></PrivateRoute>} />
+            <Route path="/Doctor-Search" patients={patients} element={<PrivateRoute><DoctorSearch /></PrivateRoute>} />
+            <Route path="/Referral-History" element={<PrivateRoute><ReferralHistory /></PrivateRoute>} />
 
             {/* charts  */}
           </Routes>

@@ -23,6 +23,7 @@ export default function Login() {
       .then((res) => res.json())
       .then((data) => {
         if (data.access_token) {
+          localStorage.setItem('REACT_TOKEN_AUTH_KEY', data.access_token);
           login(data.access_token);
           navigate('/HomePage');
         } else {

@@ -9,7 +9,7 @@ ReactDOM.render(
   <React.StrictMode>
     <ContextProvider>
       <ChakraProvider>
-        <App isLoggedIn />
+        <App />
       </ChakraProvider>
     </ContextProvider>
 
