@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Input, Center, Divider, Text, Button, Textarea } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Box, Input, Center, Divider, Text, Button, Textarea, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper, ListItem, NumberInputField, NumberInput, UnorderedList } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Form, Alert } from 'react-bootstrap';
@@ -8,6 +8,8 @@ export default function InsertDataInternalMed() {
   const [show, setShow] = React.useState(false);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [serverResponse, setServerResponse] = useState('');
+  const [doctorDisplay, setDoctorDisp] = useState();
+  const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY');
   const navigate = useNavigate();
   const submitForm = (data) => {
     const body = {
@@ -57,6 +59,41 @@ export default function InsertDataInternalMed() {
     reset();
     navigate('/patients');
   };
+
+  const requestOptionsGet = {
+    headers: {
+      'Authorization': `Bearer ${JSON.parse(token)}`,
+    },
+  };
+
+  const [text, setText] = useState('');
+  const [usernames, setUsernames] = useState([]);
+  const submitFormDepart = (input) => {
+    fetch(`/auth/doctors/${input.department}`)
+      .then((res) => res.json())
+      .then((dataa) => setUsernames(dataa))
+      .catch((err) => console.log(err));
+    reset();
+  };
+
+  const handleChange = (event) => {
+    setText(event.target.value);
+  };
+  const handleSelect = (username) => {
+    setText(`${text}${username}`);
+  };
+
+  const regex = /(\w+)/;
+  const match = text.match(regex);
+  const currentUsername = match ? match[1] : '';
+  console.log('username', usernames);
+  const options = usernames
+    .filter(({ username }) => username.startsWith(currentUsername))
+    .map(({ username }) => (
+      <option key={username} onClick={() => handleSelect(username)}>
+        {username}
+      </option>
+    ));
 
   return (
     <>
@@ -167,7 +204,7 @@ export default function InsertDataInternalMed() {
             <Form.Group id="status">
               <Form.Select {...register('status', { required: true })} id="status">
                 <option>Select Status</option>
-                <option value="ACTIVE">ACTIVE</option>
+                <option value="Active">ACTIVE</option>
                 <option value="DECEASED">DECEASED</option>
               </Form.Select>
             </Form.Group>
@@ -185,7 +222,10 @@ export default function InsertDataInternalMed() {
             <br />
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Age </Text>
             <Form.Group id="age">
-              <Input
+              <NumberInput
+                defaultValue={0}
+                min={0}
+                max={150}
                 type="age"
                 name="age"
                 {...register('age', { required: true })}
@@ -193,9 +233,15 @@ export default function InsertDataInternalMed() {
                 mt={3}
                 mb={3}
                 placeholder="enter patient's age"
-              />
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
             </Form.Group>
-
+            <br/>
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Patient's ID </Text>
             <Form.Group id="patientid">
               <Input
@@ -248,20 +294,6 @@ export default function InsertDataInternalMed() {
               </Form.Select>
             </Form.Group>
             <br />
-            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> If referral is needed, write the doctor's username for whom the referal should be redirected. If not, write N/A. </Text>
-            <Form.Group id="doctorusername">
-              <Input
-                type="doctorusername"
-                name="doctorusername"
-                {...register('doctorusername', { required: true })}
-                required
-                mt={3}
-                mb={3}
-                placeholder="Enter the Doctor Username for Whom the Referal Should be Sent To"
-              />
-            </Form.Group>
-            <br />
-
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Current Date </Text>
             <Form.Group id="date">
               <Input
@@ -272,6 +304,46 @@ export default function InsertDataInternalMed() {
                 mt={3}
                 mb={3}
                 placeholder="MM/DD/YYYY"
+              />
+            </Form.Group>
+            <br />
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> If referral is needed, search for doctors' usernames in the given departments, and click on one of the doctor's usernames. If change is needed, click 'RESET'. REFERRAL IS NOT REQUIRED, SO YOU CAN LEAVE IT BLANK. </Text>
+            <form>
+              <Form.Group>
+                <br />
+                <br />
+                <Form.Select {...register('department', { required: true })} id="department">
+                  <option>Select Department</option>
+                  <option value="Internal Medicine">Internal Medicine</option>
+                  <option value="Chronic Illness">Chronic Illness</option>
+                  <option value="Pediatrics">Pediatrics</option>
+                  <option value="Surgery">Surgery</option>
+                  <option value="Infectious Diseases">Infectious Diseases</option>
+                  <option value="FEMCancerALE">Cancer</option>
+                  <option value="Obstetrics and Gyne">Obstetrics and Gyne</option>
+                  <option value="Emegency">Emegency</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group>
+                <Button as="sub" onClick={handleSubmit(submitFormDepart)}>Search</Button>
+              </Form.Group>
+            </form>
+            <br/>
+            <UnorderedList color="green.500">
+              {options.length > 0 && options.map((option) => (
+                <ListItem margin="15px"><Button onClick={handleChange}>{option}</Button></ListItem>
+              ))}
+              <ListItem><Button onClick={handleChange}>RESET</Button></ListItem>
+            </UnorderedList>
+            <Form.Group id="doctorusername">
+              <Input
+                value={text}
+                type="doctorusername"
+                name="doctorusername"
+                {...register('doctorusername')}
+                mt={3}
+                mb={3}
+                placeholder="Enter the Doctor Username for Whom the Referal Should be Sent To"
               />
             </Form.Group>
             <br />

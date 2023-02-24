@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Input, Center, Divider, Text, Button, Textarea } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Box, Input, Center, Divider, Text, Button, Textarea, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper, ListItem, NumberInputField, NumberInput, UnorderedList } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Form, Alert } from 'react-bootstrap';
@@ -8,6 +8,8 @@ export default function InsertDataCancer() {
   const [show, setShow] = React.useState(false);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [serverResponse, setServerResponse] = useState('');
+  const [doctorDisplay, setDoctorDisp] = useState();
+  const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY');
   const navigate = useNavigate();
   const submitForm = (data) => {
     const body = {
@@ -58,6 +60,53 @@ export default function InsertDataCancer() {
     navigate('/patients');
   };
 
+  const requestOptionsGet = {
+    headers: {
+      'Authorization': `Bearer ${JSON.parse(token)}`,
+    },
+  };
+
+  const [text, setText] = useState('');
+  const [usernames, setUsernames] = useState([]);
+  const submitFormDepart = (input) => {
+    fetch(`/auth/doctors/${input.department}`)
+      .then((res) => res.json())
+      .then((dataa) => setUsernames(dataa))
+      .catch((err) => console.log(err));
+    reset();
+  };
+
+  const handleChange = (event) => {
+    setText(event.target.value);
+    const input = document.querySelector('#doctorusernameinput');
+
+    // input.value = Math.random().toString(); // nope
+
+    // This will work by  calling the native setter bypassing Reacts incorrect value change check
+    Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')
+      .set.call(input, event.target.value);
+
+    // This will trigger a new render wor the component
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  const handleSelect = (username) => {
+    setText(`${text}${username}`);
+  };
+
+  const regex = /(\w+)/;
+  const match = text.match(regex);
+  const currentUsername = match ? match[1] : '';
+  console.log('username', usernames);
+  const options = usernames
+    .filter(({ username }) => username.startsWith(currentUsername))
+    .map(({ username }) => (
+      <option key={username} onClick={() => handleSelect(username)}>
+        {username}
+      </option>
+    ));
+
+  console.log('text', text);
+
   return (
     <>
       <Alert
@@ -82,8 +131,8 @@ export default function InsertDataCancer() {
               <Input
                 type="doctorfirstname"
                 name="doctorfirstname"
-                {...register('doctorfirstname', { required: true })}
-                required
+                {...register('doctorfirstname', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="enter doctor's firstname"
@@ -94,8 +143,8 @@ export default function InsertDataCancer() {
               <Input
                 type="doctorlastname"
                 name="doctorlastname"
-                {...register('doctorlastname', { required: true })}
-                required
+                {...register('doctorlastname', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="enter doctor's lastname"
@@ -106,8 +155,8 @@ export default function InsertDataCancer() {
               <Input
                 type="doctorid"
                 name="doctorid"
-                {...register('doctorid', { required: true })}
-                required
+                {...register('doctorid', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="enter doctor's id"
@@ -130,8 +179,8 @@ export default function InsertDataCancer() {
               <Input
                 type="patientfirstname"
                 name="patientfirstname"
-                {...register('patientfirstname', { required: true })}
-                required
+                {...register('patientfirstname', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="enter patient's firstname"
@@ -142,8 +191,8 @@ export default function InsertDataCancer() {
               <Input
                 type="patientlastname"
                 name="patientlastname"
-                {...register('patientlastname', { required: true })}
-                required
+                {...register('patientlastname', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="enter patient's lastname"
@@ -154,8 +203,8 @@ export default function InsertDataCancer() {
               <Input
                 type="address"
                 name="address"
-                {...register('address', { required: true })}
-                required
+                {...register('address', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="enter patient's address"
@@ -165,9 +214,9 @@ export default function InsertDataCancer() {
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Status</Text>
             <br />
             <Form.Group id="status">
-              <Form.Select {...register('status', { required: true })} id="status">
+              <Form.Select {...register('status', { required: false })} id="status">
                 <option>Select Status</option>
-                <option value="ACTIVE">ACTIVE</option>
+                <option value="Active">ACTIVE</option>
                 <option value="DECEASED">DECEASED</option>
               </Form.Select>
             </Form.Group>
@@ -176,7 +225,7 @@ export default function InsertDataCancer() {
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Gender</Text>
             <br />
             <Form.Group id="gender">
-              <Form.Select {...register('gender', { required: true })} id="gender">
+              <Form.Select {...register('gender', { required: false })} id="gender">
                 <option>Select Gender</option>
                 <option value="MALE">MALE</option>
                 <option value="FEMALE">FEMALE</option>
@@ -185,24 +234,33 @@ export default function InsertDataCancer() {
             <br />
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Age </Text>
             <Form.Group id="age">
-              <Input
+              <NumberInput
+                defaultValue={0}
+                min={0}
+                max={150}
                 type="age"
                 name="age"
-                {...register('age', { required: true })}
-                required
+                {...register('age', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="enter patient's age"
-              />
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
             </Form.Group>
-
+            <br/>
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Patient's ID </Text>
             <Form.Group id="patientid">
               <Input
                 type="patientid"
                 name="patientid"
-                {...register('patientid', { required: true })}
-                required
+                {...register('patientid', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="enter patient's ID"
@@ -212,7 +270,7 @@ export default function InsertDataCancer() {
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Referral Department </Text>
             <br />
             <Form.Group id="currentdepartment">
-              <Form.Select {...register('currentdepartment', { required: true })} id="currentdepartment">
+              <Form.Select {...register('currentdepartment', { required: false })} id="currentdepartment">
                 <option>Select Department</option>
                 <option value="Internal Medicine">Internal Medicine</option>
                 <option value="Chronic Illness">Chronic Illness</option>
@@ -230,8 +288,8 @@ export default function InsertDataCancer() {
               <Textarea
                 type="medicalnote"
                 name="medicalnote"
-                {...register('medicalnote', { required: true })}
-                required
+                {...register('medicalnote', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="Write a detailed medical note about the patient. You can use the editor to compose your note and paste it here once done."
@@ -241,37 +299,65 @@ export default function InsertDataCancer() {
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Diagnosis and/or Medical Note Status</Text>
             <br />
             <Form.Group id="diagnosisstatus">
-              <Form.Select {...register('diagnosisstatus', { required: true })} id="diagnosisstatus" aria-label="Diagnosis Status">
+              <Form.Select {...register('diagnosisstatus', { required: false })} id="diagnosisstatus" aria-label="Diagnosis Status">
                 <option>Select Diagnosis Status</option>
                 <option value="COMPLETE">COMPLETE</option>
                 <option value="PENDING">PENDING</option>
               </Form.Select>
             </Form.Group>
             <br />
-            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> If referral is needed, write the doctor's username for whom the referal should be redirected. If not, write N/A. </Text>
-            <Form.Group id="doctorusername">
-              <Input
-                type="doctorusername"
-                name="doctorusername"
-                {...register('doctorusername', { required: true })}
-                required
-                mt={3}
-                mb={3}
-                placeholder="Enter the Doctor Username for Whom the Referal Should be Sent To"
-              />
-            </Form.Group>
-            <br />
-
             <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Current Date </Text>
             <Form.Group id="date">
               <Input
                 type="date"
                 name="date"
-                {...register('date', { required: true })}
-                required
+                {...register('date', { required: false })}
+                // required
                 mt={3}
                 mb={3}
                 placeholder="MM/DD/YYYY"
+              />
+            </Form.Group>
+            <br />
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> If referral is needed, search for doctors' usernames in the given departments, and click on one of the doctor's usernames. If change is needed, click 'RESET'. REFERRAL IS NOT REQUIRED, SO YOU CAN LEAVE IT BLANK. </Text>
+            <form>
+              <Form.Group>
+                <br />
+                <br />
+                <Form.Select {...register('department', { required: true })} id="department">
+                  <option>Select Department</option>
+                  <option value="Internal Medicine">Internal Medicine</option>
+                  <option value="Chronic Illness">Chronic Illness</option>
+                  <option value="Pediatrics">Pediatrics</option>
+                  <option value="Surgery">Surgery</option>
+                  <option value="Infectious Diseases">Infectious Diseases</option>
+                  <option value="FEMCancerALE">Cancer</option>
+                  <option value="Obstetrics and Gyne">Obstetrics and Gyne</option>
+                  <option value="Emegency">Emegency</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group>
+                <Button as="sub" onClick={handleSubmit(submitFormDepart)}>Search</Button>
+              </Form.Group>
+            </form>
+            <br/>
+            <UnorderedList color="green.500">
+              {options.length > 0 && options.map((option) => (
+                <ListItem margin="15px"><Button onClick={handleChange}>{option}</Button></ListItem>
+              ))}
+              <ListItem><Button onClick={handleChange}>RESET</Button></ListItem>
+            </UnorderedList>
+            <Form.Group id="doctorusername">
+              <Input
+                id="doctorusernameinput"
+                value={text}
+                onChange={(e) => console.log('controlled', e.target.value)}
+                type="doctorusername"
+                name="doctorusername"
+                {...register('doctorusername')}
+                mt={3}
+                mb={3}
+                placeholder="Enter the Doctor Username for Whom the Referal Should be Sent To"
               />
             </Form.Group>
             <br />
