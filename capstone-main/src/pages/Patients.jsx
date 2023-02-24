@@ -47,25 +47,26 @@ const Patients = () => {
       fetch(`/patients/patients/${state.data[0].patientid}`, requestOptionsTwo)
         .then((res) => state.endEdit())
         .catch((err) => console.log(err));
-    } else if (state.action === 'edit') {
-      const requestOptions = {
-        method: 'PUT',
-        headers: {
-          'content-type': 'application/json',
-          'Authorization': `Bearer ${JSON.parse(token)}`,
-        },
-        body: JSON.stringify(state.data),
-      };
-
-      fetch(`/patients/patients/${state.data.patientid}`, requestOptions)
-        .then((res) => res.json())
-        .then((res) => state.endEdit())
-        // eslint-disable-next-line no-shadow
-        .then((data) => {
-          console.log('DATA =', data);
-        })
-        .catch((err) => console.log(err));
     }
+    // else if (state.action === 'edit') {
+    //   const requestOptions = {
+    //     method: 'PUT',
+    //     headers: {
+    //       'content-type': 'application/json',
+    //       'Authorization': `Bearer ${JSON.parse(token)}`,
+    //     },
+    //     body: JSON.stringify(state.data),
+    //   };
+
+    //   fetch(`/patients/patients/${state.data.patientid}`, requestOptions)
+    //     .then((res) => res.json())
+    //     .then((res) => state.endEdit())
+    //     // eslint-disable-next-line no-shadow
+    //     .then((data) => {
+    //       console.log('DATA =', data);
+    //     })
+    //     .catch((err) => console.log(err));
+    // }
   }
 
   return (
