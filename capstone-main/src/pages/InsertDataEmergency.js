@@ -20,7 +20,7 @@ export default function InsertDataEmergency() {
       gender: data.gender,
       medicalnote: data.medicalnote,
       age: data.age,
-      department: 'Oncology',
+      department: 'Pediatrics',
       currentdepartment: data.currentdepartment,
       status: data.status,
       diagnosisstatus: data.diagnosisstatus,
@@ -255,11 +255,12 @@ export default function InsertDataEmergency() {
               />
             </Form.Group>
             <br />
-            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Referral Department </Text>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Referred Department </Text>
             <br />
             <Form.Group id="currentdepartment">
               <Form.Select {...register('currentdepartment', { required: true })} id="currentdepartment">
                 <option>Select Department</option>
+                <option value="Not Referred">I am not referring this case</option>
                 <option value="Internal Medicine">Internal Medicine</option>
                 <option value="Chronic Illness">Chronic Illness</option>
                 <option value="Pediatrics">Pediatrics</option>
@@ -307,7 +308,7 @@ export default function InsertDataEmergency() {
               />
             </Form.Group>
             <br />
-            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> If referral is needed, search for doctors' usernames in the given departments, and click on one of the doctor's usernames. If change is needed, click 'RESET'. REFERRAL IS NOT REQUIRED, SO YOU CAN LEAVE IT BLANK. </Text>
+            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> If referral is needed, search for doctors' usernames in the given departments, and click on one of the doctor's usernames. If change is needed, click 'RESET'. IF REFERRAL IS NOT REQUIRED, SO YOU CAN LEAVE IT BLANK. </Text>
             <form>
               <Form.Group>
                 <br />
@@ -343,7 +344,7 @@ export default function InsertDataEmergency() {
                 {...register('doctorusername')}
                 mt={3}
                 mb={3}
-                placeholder="Enter the Doctor Username for Whom the Referal Should be Sent To"
+                placeholder=""
               />
             </Form.Group>
             <br />

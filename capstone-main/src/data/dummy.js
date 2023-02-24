@@ -539,7 +539,7 @@ export const customersGrid = [
     template: patientGridDepartment },
 
   { field: 'currentdepartment',
-    headerText: 'Current Department',
+    headerText: 'Referred Department',
     width: '200',
     format: 'yMd',
     textAlign: 'Left',
