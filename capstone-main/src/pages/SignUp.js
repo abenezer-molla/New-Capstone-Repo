@@ -218,28 +218,19 @@ export default function SignUp() {
                 </Form.Select>
               </Form.Group>
               <br/>
-              <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Age </Text>
+              <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Date of Birth </Text>
               <Form.Group id="age">
-                <NumberInput
-                  defaultValue={0}
-                  min={0}
-                  max={150}
-                  type="age"
-                  name="age"
+                <Input
+                  type="date"
+                  name="date"
                   {...register('age', { required: true })}
-                  // required
+                  required
                   mt={3}
                   mb={3}
-                  placeholder="enter patient's age"
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
+                  placeholder="MM/DD/YYYY"
+                />
               </Form.Group>
-              <br/>
+              <br />
               <Text mt={5} style={{ lineHeight: '110%', fontWeight: 'bolder' }}>Department the Doctor is Working Under</Text>
               <br/>
               <Form.Group id="department">

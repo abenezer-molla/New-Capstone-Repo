@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_restx import Api
 from config import DevConfig
-from models import User, Patients, ReferralHistory
+from models import User, Patients, ReferralHistory, DoctorStatus
 from exts import db
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -31,7 +31,8 @@ def make_shell_context():
         "db": db,
         "user": User,
         "patients": Patients,
-        "referrals": ReferralHistory
+        "referrals": ReferralHistory,
+        "doctorStatus": DoctorStatus
     }
 
 

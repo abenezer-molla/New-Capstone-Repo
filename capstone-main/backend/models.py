@@ -56,6 +56,29 @@ class Patients(db.Model):
         db.session.commit()
 
 
+class DoctorStatus(db.Model):
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=True)
+    doctorid = db.Column(db.Integer, nullable=True)
+    doctorfirstname = db.Column(db.String(80), nullable=False)
+    doctorlastname = db.Column(db.String(80), nullable=False)
+    status = db.Column(db.String(80), nullable=False)
+    doctorusername = db.Column(
+        db.String(80), nullable=True)
+    date = db.Column(
+        db.String(80))
+
+    def __repr__(self):
+        return f"<PatientID =  {self.patientid} >"
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
 class ReferralHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     patientid = db.Column(db.Integer, nullable=False)
@@ -98,7 +121,7 @@ class User(db.Model):
     address = db.Column(db.String(80), nullable=False)
     level = db.Column(db.String(80), nullable=False)
     gender = db.Column(db.String(80), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
+    age = db.Column(db.String(80), nullable=False)
     department = db.Column(db.String(80), nullable=False)
     password = db.Column(db.Text(), nullable=False)
 
