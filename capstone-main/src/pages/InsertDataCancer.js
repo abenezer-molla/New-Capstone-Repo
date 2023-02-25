@@ -20,20 +20,19 @@ export default function InsertDataCancer() {
       gender: data.gender,
       medicalnote: data.medicalnote,
       age: data.age,
-      department: 'Pediatrics',
+      department: 'Cancer',
       currentdepartment: data.currentdepartment,
       status: data.status,
       diagnosisstatus: data.diagnosisstatus,
-      doctorfirstname: data.doctorfirstname,
-      doctorlastname: data.doctorlastname,
-      doctorid: data.doctorid,
       doctorusername: data.doctorusername,
       date: new Date(),
     };
+
     const requestOptions = {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
+        'Authorization': `Bearer ${JSON.parse(token)}`,
       },
       body: JSON.stringify(body),
     };
@@ -108,50 +107,9 @@ export default function InsertDataCancer() {
           {serverResponse}
         </p>
       </Alert>
-      <Box h="calc(250vh)" w="100%">
+      <Box h="calc(200vh)" w="100%">
         <Center w="50%" h="100%">
           <Box w="70%">
-            <Text fontSize="6xl" mt={3} style={{ lineHeight: '200%', fontWeight: 'bolder' }}>
-              Doctor's Data
-            </Text>
-            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's First Name</Text>
-            <Form.Group id="doctorfirstname">
-              <Input
-                type="doctorfirstname"
-                name="doctorfirstname"
-                {...register('doctorfirstname', { required: true })}
-                required
-                mt={3}
-                mb={3}
-                placeholder="enter doctor's firstname"
-              />
-            </Form.Group>
-            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's Last Name</Text>
-            <Form.Group id="doctorlastname">
-              <Input
-                type="doctorlastname"
-                name="doctorlastname"
-                {...register('doctorlastname', { required: true })}
-                required
-                mt={3}
-                mb={3}
-                placeholder="enter doctor's lastname"
-              />
-            </Form.Group>
-            <Text mt={3} style={{ lineHeight: '110%', fontWeight: 'bolder' }}> Doctor's ID </Text>
-            <Form.Group id="doctorid">
-              <Input
-                type="doctorid"
-                name="doctorid"
-                {...register('doctorid', { required: true })}
-                required
-                mt={3}
-                mb={3}
-                placeholder="enter doctor's id"
-              />
-            </Form.Group>
-            <br />
-            <Divider />
             <Divider />
             <Divider />
             <br />

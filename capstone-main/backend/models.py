@@ -62,6 +62,7 @@ class DoctorStatus(db.Model):
     doctorfirstname = db.Column(db.String(80), nullable=False)
     doctorlastname = db.Column(db.String(80), nullable=False)
     status = db.Column(db.String(80), nullable=False)
+    department = db.Column(db.String(80), nullable=False)
     doctorusername = db.Column(
         db.String(80), nullable=True)
     date = db.Column(

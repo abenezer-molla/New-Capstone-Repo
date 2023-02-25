@@ -51,6 +51,19 @@ class ReferralResource(Resource):
     @referral_ns.expect(referral_model)
     def post(self):
         """Create a new Patient Referrals History"""
+        token = None
+
+        print(request.headers.get('Authorization'))
+
+        if 'Authorization' in request.headers:
+            token = request.headers.get('Authorization').split(' ')[1]
+
+        if not token:
+            return jsonify({'message': 'Token is missing !!'}), 401
+
+        data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
+        current_user = User.query.filter_by(username=data['sub']).first()
+        print("current_user", current_user)
 
         data = request.get_json()
 
@@ -66,9 +79,9 @@ class ReferralResource(Resource):
             status=data.get('status'),
             medicalnote=data.get('medicalnote'),
             diagnosisstatus=data.get('diagnosisstatus'),
-            doctorfirstname=data.get('doctorfirstname'),
-            doctorlastname=data.get('doctorlastname'),
-            doctorid=data.get('doctorid'),
+            doctorfirstname=current_user.firstname,
+            doctorlastname=current_user.lastname,
+            doctorid=current_user.doctorid,
             doctorusername=data.get('doctorusername'),
             date=data.get('date')
         )
@@ -156,8 +169,22 @@ class PatientsResource(Resource):
 
     @patients_ns.marshal_with(patients_model)
     @patients_ns.expect(patients_model)
+    @jwt_required()
     def post(self):
         """Create a new patient"""
+        token = None
+
+        print(request.headers.get('Authorization'))
+
+        if 'Authorization' in request.headers:
+            token = request.headers.get('Authorization').split(' ')[1]
+
+        if not token:
+            return jsonify({'message': 'Token is missing !!'}), 401
+
+        data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
+        current_user = User.query.filter_by(username=data['sub']).first()
+        print("current_user", current_user)
 
         data = request.get_json()
 
@@ -173,9 +200,9 @@ class PatientsResource(Resource):
             status=data.get('status'),
             medicalnote=data.get('medicalnote'),
             diagnosisstatus=data.get('diagnosisstatus'),
-            doctorfirstname=data.get('doctorfirstname'),
-            doctorlastname=data.get('doctorlastname'),
-            doctorid=data.get('doctorid'),
+            doctorfirstname=current_user.firstname,
+            doctorlastname=current_user.lastname,
+            doctorid=current_user.doctorid,
             doctorusername=data.get('doctorusername'),
             date=data.get('date')
         )

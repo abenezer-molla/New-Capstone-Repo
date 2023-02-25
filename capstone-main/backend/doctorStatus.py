@@ -58,25 +58,33 @@ def token_required(f):
 
 @doctorStatus_ns.route('/doctor_status')
 class DoctorStat(Resource):
-    @jwt_required()
-    @doctorStatus_ns.marshal_with(doctorStatus_model)
-    def get(self):
-        """Get all doctors """
-        doctorStatus = DoctorStatus.query.all()
-        return doctorStatus
 
+    @jwt_required()
     @doctorStatus_ns.expect(doctorStatus_model)
     def post(self):
+        """Get currently looged in User """
+        token = None
+
+        print(request.headers.get('Authorization'))
+
+        if 'Authorization' in request.headers:
+            token = request.headers.get('Authorization').split(' ')[1]
+
+        if not token:
+            return jsonify({'message': 'Token is missing !!'}), 401
+
+        data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
+        current_user = User.query.filter_by(username=data['sub']).first()
         data = request.get_json()
 
         newUser = DoctorStatus(
-            username=data.get('doctorusername'),
-            firstname=data.get('doctorfirstname'),
-            lastname=data.get('doctorlastname'),
+            doctorusername=current_user.username,
+            doctorfirstname=current_user.firstname,
+            doctorlastname=current_user.lastname,
             status=data.get('status'),
-            department=data.get('department'),
+            department=current_user.department,
             date=data.get('date'),
-            doctorid=data.get('doctorid'),
+            doctorid=current_user.doctorid,
         )
         newUser.save()
         return make_response(jsonify({"message": "User created/registered successfuly"}), 201)

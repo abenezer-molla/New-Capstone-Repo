@@ -6,7 +6,6 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { NavLink } from 'react-router-dom';
 import { Text, Button, HStack } from '@chakra-ui/react';
-
 import avatar from '../data/aben.jpeg';
 import { Chat, Notification, UserProfile } from '.';
 import { useStateContext } from '../contexts/ContextProvider';
@@ -52,7 +51,6 @@ const Navbar = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
   const handleLogout = () => {
     localStorage.setItem('REACT_TOKEN_AUTH_KEY', null);
-    console.log(localStorage.getItem('REACT_TOKEN_AUTH_KEY'));
   };
 
   return (
