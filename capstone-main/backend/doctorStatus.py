@@ -57,7 +57,7 @@ def token_required(f):
 
 
 @doctorStatus_ns.route('/doctor_status')
-class SignUp(Resource):
+class DoctorStat(Resource):
     @jwt_required()
     @doctorStatus_ns.marshal_with(doctorStatus_model)
     def get(self):
@@ -69,7 +69,7 @@ class SignUp(Resource):
     def post(self):
         data = request.get_json()
 
-        newUser = User(
+        newUser = DoctorStatus(
             username=data.get('doctorusername'),
             firstname=data.get('doctorfirstname'),
             lastname=data.get('doctorlastname'),

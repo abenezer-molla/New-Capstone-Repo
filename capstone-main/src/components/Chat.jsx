@@ -1,7 +1,7 @@
 import React from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 
-import { Button } from '.';
+import { BUTTON } from '.';
 import { chatData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 
@@ -17,7 +17,7 @@ const Chat = () => {
             5 New
           </button>
         </div>
-        <Button
+        <BUTTON
           icon={<MdOutlineCancel />}
           color="rgb(153, 171, 180)"
           bgHoverColor="light-gray"

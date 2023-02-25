@@ -9,6 +9,7 @@ from flask_jwt_extended import JWTManager, create_access_token, create_refresh_t
 from auth import auth_ns
 from patients import patients_ns
 from patients import referral_ns
+from doctorStatus import doctorStatus_ns
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -23,6 +24,7 @@ api = Api(app, doc='/docs')
 api.add_namespace(auth_ns)
 api.add_namespace(patients_ns)
 api.add_namespace(referral_ns)
+api.add_namespace(doctorStatus_ns)
 
 
 @app.shell_context_processor

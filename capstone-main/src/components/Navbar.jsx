@@ -53,7 +53,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.setItem('REACT_TOKEN_AUTH_KEY', null);
     console.log(localStorage.getItem('REACT_TOKEN_AUTH_KEY'));
-  }
+  };
 
   return (
     <div className="flex relative">
@@ -61,28 +61,9 @@ const Navbar = () => {
 
         <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
         <div className="flex gap-1">
-          <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => handleClick('chat')} color={currentColor} icon={<BsChatLeft />} />
+          {/* <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => handleClick('chat')} color={currentColor} icon={<BsChatLeft />} /> */}
           <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} />
-          <TooltipComponent content="Profile" position="BottomCenter">
-            <div
-              className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-              onClick={() => handleClick('userProfile')}
-            >
-              {/*
-                <img
-                  className="rounded-full w-8 h-8"
-                  alt="user-profile"
-                />
-              */}
-              <p>
-                <span className="text-black-400 font-bold ml-1  text-14">Welcome</span>
-              </p>
-              <MdKeyboardArrowDown className="text-black-400 text-14" />
-            </div>
-          </TooltipComponent>
-          {isClicked.chat && (<Chat />)}
           {isClicked.notification && (<Notification />)}
-          {isClicked.userProfile && (<UserProfile />)}
         </div>
       </div>
       <div>
