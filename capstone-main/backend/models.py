@@ -57,8 +57,9 @@ class Patients(db.Model):
 
 
 class DoctorStatus(db.Model):
+    __tablename__ = 'DoctorStatus'
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=True)
-    doctorid = db.Column(db.Integer, nullable=True)
+    doctorid = db.Column(db.Integer, db.ForeignKey('user.doctorid'))
     doctorfirstname = db.Column(db.String(80), nullable=False)
     doctorlastname = db.Column(db.String(80), nullable=False)
     status = db.Column(db.String(80), nullable=False)
@@ -69,7 +70,7 @@ class DoctorStatus(db.Model):
         db.String(80))
 
     def __repr__(self):
-        return f"<PatientID =  {self.patientid} >"
+        return f"<User {self.doctorusername}>"
 
     def save(self):
         db.session.add(self)

@@ -2,6 +2,7 @@ from flask_restx import Resource, Namespace, fields
 from models import User
 from models import DoctorStatus
 from config import Config
+from exts import db
 
 from flask_login import LoginManager
 import jwt
@@ -77,17 +78,25 @@ class DoctorStat(Resource):
         current_user = User.query.filter_by(username=data['sub']).first()
         data = request.get_json()
 
-        newUser = DoctorStatus(
-            doctorusername=current_user.username,
-            doctorfirstname=current_user.firstname,
-            doctorlastname=current_user.lastname,
-            status=data.get('status'),
-            department=current_user.department,
-            date=data.get('date'),
-            doctorid=current_user.doctorid,
-        )
-        newUser.save()
-        return make_response(jsonify({"message": "User created/registered successfuly"}), 201)
+        doctor = DoctorStatus.query.filter_by(
+            doctorid=current_user.doctorid).first()
+        status = data.get('status')
+
+        if doctor:
+            doctor.status = status
+            db.session.commit()
+        else:
+            newUser = DoctorStatus(
+                doctorusername=current_user.username,
+                doctorfirstname=current_user.firstname,
+                doctorlastname=current_user.lastname,
+                status=data.get('status'),
+                department=current_user.department,
+                date=data.get('date'),
+                doctorid=current_user.doctorid,
+            )
+            newUser.save()
+            return make_response(jsonify({"message": "User created/registered successfuly"}), 201)
 
 
 @doctorStatus_ns.route('/refresh')  # used to generate refresh token

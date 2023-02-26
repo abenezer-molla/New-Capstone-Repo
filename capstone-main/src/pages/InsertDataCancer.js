@@ -82,10 +82,7 @@ export default function InsertDataCancer() {
     setText(`${text}${username}`);
   };
 
-  const regex = /(\w+)/;
-  const match = text.match(regex);
-  const currentUsername = match ? match[1] : '';
-  console.log('username', usernames);
+  const currentUsername = '';
   const options = usernames
     .filter(({ username }) => username.startsWith(currentUsername))
     .map(({ username }) => (
@@ -93,6 +90,7 @@ export default function InsertDataCancer() {
         {username}
       </option>
     ));
+    console.log('options', options);
 
   return (
     <>

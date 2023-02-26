@@ -1,5 +1,6 @@
 from flask_restx import Resource, Namespace, fields
 from models import User
+from models import DoctorStatus
 from config import Config
 from flask_login import LoginManager
 import jwt
@@ -24,7 +25,7 @@ signup_model = auth_ns.model(
         "password": fields.String(),
         "level": fields.String(),
         "gender": fields.String(),
-        "age": fields.Integer(),
+        "age": fields.String(),
         "department": fields.String(),
     }
 )
@@ -41,7 +42,7 @@ doctors_model = auth_ns.model(
         "password": fields.String(),
         "level": fields.String(),
         "gender": fields.String(),
-        "age": fields.Integer(),
+        "age": fields.String(),
         "department": fields.String(),
         "doctorid": fields.Integer(),
     }
@@ -125,23 +126,29 @@ class DoctorByDepartmentResource(Resource):
     @auth_ns.marshal_with(doctors_model)
     def get(self, department):
         """ Get a doctors by department """
-        doctor = User.query.filter(User.department == department).all()
-        print(doctor)
+        doctor = User.query.join(DoctorStatus).filter(
+            User.department == department, DoctorStatus.status == 'ON DUTY').all()
+        doctor1 = User.query.filter(User.department == department).all()
+        doctor2 = DoctorStatus.query.filter(
+            DoctorStatus.status == "ON DUTY").all()
+
+        print("DOCTORRRRRRRRRRRRRRRRRRRRRR", doctor1)
+        print("DOCTORRRRRRRRRRRRRRRRRRRRRR", doctor2)
         return doctor
 
 
-@auth_ns.route('/doctors/<int:id>')
+@ auth_ns.route('/doctors/<int:id>')
 class DoctorResource(Resource):
 
-    @auth_ns.marshal_with(doctors_model)
+    @ auth_ns.marshal_with(doctors_model)
     def get(self, id):
         """Get a doctor by id """
         doctor = User.query.filter(User.doctorid == id).first()
 
         return [doctor]
 
-    @auth_ns.marshal_with(doctors_model)
-    @jwt_required()
+    @ auth_ns.marshal_with(doctors_model)
+    @ jwt_required()
     def put(self, id):
         """Update a doctor by id """
 
@@ -162,8 +169,8 @@ class DoctorResource(Resource):
 
         return doctor_data_to_update
 
-    @auth_ns.marshal_with(doctors_model)
-    @jwt_required()
+    @ auth_ns.marshal_with(doctors_model)
+    @ jwt_required()
     def delete(self, id):
         """Delete a doctor by id """
 
@@ -173,10 +180,10 @@ class DoctorResource(Resource):
         return doctor_data_to_delete
 
 
-@auth_ns.route('/login')  # function for Login user
+@ auth_ns.route('/login')  # function for Login user
 class Login(Resource):
 
-    @auth_ns.expect(login_model)
+    @ auth_ns.expect(login_model)
     def post(self):
         data = request.get_json()
         username = data.get('username')
@@ -196,9 +203,9 @@ class Login(Resource):
             return jsonify({"message": "Invalid username and/or password"})
 
 
-@auth_ns.route('/refresh')  # used to generate refresh token
+@ auth_ns.route('/refresh')  # used to generate refresh token
 class RefreshResource(Resource):
-    @jwt_required(refresh=True)
+    @ jwt_required(refresh=True)
     def post(self):
         currentUser = get_jwt_identity()
         new_access_token = create_access_token(identity=currentUser)
