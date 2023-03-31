@@ -7,7 +7,7 @@ import { RiContactsLine } from 'react-icons/ri';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { TiTick } from 'react-icons/ti';
-import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/esm/Button';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, Link } from 'react-router-dom';
