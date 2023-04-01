@@ -87,13 +87,13 @@ def token_required(f):
 class SignUp(Resource):
     @jwt_required()
     @auth_ns.marshal_with(doctors_model)
-    def get(self):
+    def get(self):  # used for READ method of CRUD functionality
         """Get all doctors """
         doctors = User.query.all()
         return doctors
 
     @auth_ns.expect(signup_model)
-    def post(self):
+    def post(self):  # used for CREATE method of CRUD functionality
         data = request.get_json()
         username = data.get('username')
 
@@ -124,7 +124,7 @@ class SignUp(Resource):
 class DoctorByDepartmentResource(Resource):
 
     @auth_ns.marshal_with(doctors_model)
-    def get(self, department):
+    def get(self, department):  # used for READ method of CRUD functionality
         """ Get a doctors by department """
         doctor = User.query.join(DoctorStatus).filter(
             User.department == department, DoctorStatus.status == 'ON DUTY').all()
@@ -132,8 +132,6 @@ class DoctorByDepartmentResource(Resource):
         doctor2 = DoctorStatus.query.filter(
             DoctorStatus.status == "ON DUTY").all()
 
-        print("DOCTORRRRRRRRRRRRRRRRRRRRRR", doctor1)
-        print("DOCTORRRRRRRRRRRRRRRRRRRRRR", doctor2)
         return doctor
 
 
@@ -141,7 +139,7 @@ class DoctorByDepartmentResource(Resource):
 class DoctorResource(Resource):
 
     @ auth_ns.marshal_with(doctors_model)
-    def get(self, id):
+    def get(self, id):  # used for READ method of CRUD functionality
         """Get a doctor by id """
         doctor = User.query.filter(User.doctorid == id).first()
 
@@ -149,7 +147,7 @@ class DoctorResource(Resource):
 
     @ auth_ns.marshal_with(doctors_model)
     @ jwt_required()
-    def put(self, id):
+    def put(self, id):  # used for UPDATE method of CRUD functionality
         """Update a doctor by id """
 
         doctor_data_to_update = User.query.filter(
@@ -171,7 +169,7 @@ class DoctorResource(Resource):
 
     @ auth_ns.marshal_with(doctors_model)
     @ jwt_required()
-    def delete(self, id):
+    def delete(self, id):  # used for DELETE method of CRUD functionality
         """Delete a doctor by id """
 
         doctor_data_to_delete = User.query.filter(
@@ -184,7 +182,7 @@ class DoctorResource(Resource):
 class Login(Resource):
 
     @ auth_ns.expect(login_model)
-    def post(self):
+    def post(self):  # used for CREATE method of CRUD functionality
         data = request.get_json()
         username = data.get('username')
         doctorid = data.get('doctorid')
@@ -206,7 +204,7 @@ class Login(Resource):
 @ auth_ns.route('/refresh')  # used to generate refresh token
 class RefreshResource(Resource):
     @ jwt_required(refresh=True)
-    def post(self):
+    def post(self):  # used for CREATE method of CRUD functionality
         currentUser = get_jwt_identity()
         new_access_token = create_access_token(identity=currentUser)
         return make_response(jsonify({"access_token": new_access_token}), 200)

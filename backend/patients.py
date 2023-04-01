@@ -39,7 +39,7 @@ referral_model = referral_ns.model(
 class ReferralResource(Resource):
 
     @referral_ns.marshal_list_with(referral_model)
-    def get(self):
+    def get(self):  # used for READ method of CRUD functionality
         """Get all patients """
 
         patients = Patients.query.filter(
@@ -49,21 +49,22 @@ class ReferralResource(Resource):
 
     @referral_ns.marshal_with(referral_model)
     @referral_ns.expect(referral_model)
-    def post(self):
+    def post(self):  # used for CREATE method of CRUD functionality
         """Create a new Patient Referrals History"""
+
         token = None
 
         print(request.headers.get('Authorization'))
 
         if 'Authorization' in request.headers:
-            token = request.headers.get('Authorization').split(' ')[1]
+            token = request.headers.get('Authorization').split(
+                ' ')[1]  # extracting authorization header text
 
         if not token:
             return jsonify({'message': 'Token is missing !!'}), 401
 
         data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
         current_user = User.query.filter_by(username=data['sub']).first()
-        print("current_user", current_user)
 
         data = request.get_json()
 
@@ -88,6 +89,7 @@ class ReferralResource(Resource):
 
         new_patient.save()
 
+        # the 201, is as network response to show that everything went smooth.
         return new_patient, 201
 
 
@@ -95,7 +97,7 @@ class ReferralResource(Resource):
 class ReferralResource(Resource):
 
     @referral_ns.marshal_with(referral_model)
-    def get(self, id):
+    def get(self, id):  # used for READ method of CRUD functionality
         """Get a Referrals by id """
         patients = ReferralHistory.query.filter(
             ReferralHistory.patientid == id).all()
@@ -128,17 +130,11 @@ patients_model = patients_ns.model(
 )
 
 
-@patients_ns.route('/hello')
-class HelloPatient(Resource):
-    def get(self):
-        return {"message": "Hello World"}
-
-
 @patients_ns.route('/patients/referral')
 class Referral(Resource):
     @jwt_required()
     @patients_ns.marshal_list_with(patients_model)
-    def get(self):
+    def get(self):  # used for READ method of CRUD functionality
         """Get all doctors """
         token = None
         print(request.headers.get('Authorization'))
@@ -160,7 +156,7 @@ class Referral(Resource):
 class PatientsResource(Resource):
 
     @patients_ns.marshal_list_with(patients_model)
-    def get(self):
+    def get(self):  # used for READ method of CRUD functionality
         """Get all patients """
 
         patients = Patients.query.all()
@@ -170,14 +166,15 @@ class PatientsResource(Resource):
     @patients_ns.marshal_with(patients_model)
     @patients_ns.expect(patients_model)
     @jwt_required()
-    def post(self):
+    def post(self):  # used for CREATE method of CRUD functionality
         """Create a new patient"""
         token = None
 
         print(request.headers.get('Authorization'))
 
         if 'Authorization' in request.headers:
-            token = request.headers.get('Authorization').split(' ')[1]
+            token = request.headers.get('Authorization').split(
+                ' ')[1]  # extracting the authorization text
 
         if not token:
             return jsonify({'message': 'Token is missing !!'}), 401
@@ -209,6 +206,7 @@ class PatientsResource(Resource):
 
         new_patient.save()
 
+        # the 201, is as network response to show that everything went smooth.
         return new_patient, 201
 
 
@@ -216,7 +214,7 @@ class PatientsResource(Resource):
 class PatientResource(Resource):
 
     @patients_ns.marshal_with(patients_model)
-    def get(self, id):
+    def get(self, id):  # used for READ method of CRUD functionality
         """Get a patient by id """
         patients = Patients.query.filter(Patients.patientid == id).all()
 
@@ -224,8 +222,9 @@ class PatientResource(Resource):
 
     @patients_ns.marshal_with(patients_model)
     @jwt_required()
-    def put(self, id):
+    def put(self, id):  # used for PUT method of CRUD functionality
         """Update a patient by id """
+
         print('Here', Patients.query.all(), id)
         patient_data_to_update = Patients.query.filter(
             Patients.patientid == id).first()
@@ -251,7 +250,7 @@ class PatientResource(Resource):
 
     @patients_ns.marshal_with(patients_model)
     @jwt_required()
-    def delete(self, id):
+    def delete(self, id):  # used for DELETE method of CRUD functionality
         """Delete a patient by id """
 
         patient_data_to_delete = Patients.query.filter(

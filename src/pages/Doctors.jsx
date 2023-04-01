@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GridComponent, Selection, Inject, ColumnsDirective, ColumnDirective, Search, Page, Edit, Toolbar, Sort, Filter, PdfExport } from '@syncfusion/ej2-react-grids';
+import { GridComponent, Selection, Inject, ColumnsDirective, ColumnDirective, Page, Edit, Toolbar, Sort, Filter, PdfExport } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { employeesGrid } from '../data/dummy';
@@ -31,7 +31,7 @@ const Doctors = () => {
     headers: {
       'Authorization': `Bearer ${JSON.parse(token)}`,
     },
-  };
+  }; // contains the authorization header text that is now stored in a varibale to be used easily.
 
   function refreshGrid() {
     fetch('/auth/doctors', requestOptionsGet)
@@ -48,10 +48,7 @@ const Doctors = () => {
     refreshGrid();
   }, []);
 
-  console.log('doctors', doctors);
-
-  function dataSourceChanged(state) {
-    console.log(state);
+  function dataSourceChanged(state) { // will be activated when the table is double clicked and the data is changed.
     if (state.action === 'edit') {
       const requestOptions = {
         method: 'PUT',
@@ -62,15 +59,11 @@ const Doctors = () => {
         body: JSON.stringify(state.data),
       };
 
-      fetch(`/auth/doctors/${state.data.doctorid}`, requestOptions)
+      fetch(`/auth/doctors/${state.data.doctorid}`, requestOptions) // fetching doctors using their ID
         .then((res) => res.json())
-        // eslint-disable-next-line no-shadow
-        .then((data) => {
-          console.log('DATA =', data);
-        })
         .then(res => state.endEdit())
         .catch((err) => console.log(err));
-    } else if (state.requestType === 'delete') {
+    } else if (state.requestType === 'delete') { // deleting doctors using their ID
       const requestOptionsTwo = {
         method: 'DELETE',
         headers: {
@@ -124,19 +117,17 @@ const Doctors = () => {
           <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
             <Header category="Page" title="Physicians" />
             <GridComponent
-              dataSource={doctors}
+              dataSource={doctors} // which I have fetched and stored in the variable doctors above.
               // eslint-disable-next-line react/jsx-no-bind
               dataSourceChanged={dataSourceChanged}
               enableHover
               allowPaging
               width="auto"
-              // allowGrouping
               groupSettings={{ columns: ['department'] }}
               pageSettings={{ pageSize: 1000, pageSizes: true }}
               selectionSettings={selectionsettings}
               toolbar={toolbarOptions}
               editSettings={editing}
-              // searchSettings={searchOptions}
               allowExcelExport
               allowPdfExport
               allowSorting

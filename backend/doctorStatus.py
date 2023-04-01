@@ -61,8 +61,9 @@ def token_required(f):
 class DoctorStat(Resource):
 
     @jwt_required()
+    # jwt_required() means the method below will only work for a logged in authorized individual with unexpired jwt token.
     @doctorStatus_ns.expect(doctorStatus_model)
-    def post(self):
+    def post(self):  # used for CREATE method of CRUD functionality
         """Get currently looged in User """
         token = None
 
@@ -82,10 +83,11 @@ class DoctorStat(Resource):
             doctorid=current_user.doctorid).first()
         status = data.get('status')
 
-        if doctor:
+        if doctor:  # if the doctor is already in the doctorStatus table
+            # we just need to update by assigning the status we get from the frontend input into the backend table
             doctor.status = status
             db.session.commit()
-        else:
+        else:  # if not, we will have to register all the required doctor infomations along with the status
             newUser = DoctorStatus(
                 doctorusername=current_user.username,
                 doctorfirstname=current_user.firstname,
@@ -102,7 +104,7 @@ class DoctorStat(Resource):
 @doctorStatus_ns.route('/refresh')  # used to generate refresh token
 class RefreshResource(Resource):
     @jwt_required(refresh=True)
-    def post(self):
+    def post(self):  # used for CREATE method of CRUD functionality
         currentUser = get_jwt_identity()
         new_access_token = create_access_token(identity=currentUser)
         return make_response(jsonify({"access_token": new_access_token}), 200)

@@ -1,11 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 from flask_restx import Api
 from config import DevConfig
 from models import User, Patients, ReferralHistory, DoctorStatus
 from exts import db
 from flask_migrate import Migrate
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import JWTManager, create_access_token, create_refresh_token, jwt_required
+from flask_jwt_extended import JWTManager
 from auth import auth_ns
 from patients import patients_ns
 from patients import referral_ns
@@ -21,10 +20,10 @@ jwt = JWTManager(app)
 CORS(app)
 
 api = Api(app, doc='/docs')
-api.add_namespace(auth_ns)
-api.add_namespace(patients_ns)
-api.add_namespace(referral_ns)
-api.add_namespace(doctorStatus_ns)
+api.add_namespace(auth_ns)  # namespace for authentication
+api.add_namespace(patients_ns)  # namespace for patients
+api.add_namespace(referral_ns)  # namespace for referral
+api.add_namespace(doctorStatus_ns)  # namespace for doctor status
 
 
 @app.shell_context_processor
