@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Footer, ThemeSettings } from './components';
-import { HomePage, Recent, Doctors, Patients, Editor } from './pages';
+import { HomePage, Recent, Doctors, Patients } from './pages';
 import InsertDataPedi from './pages/InsertDataPedi';
 import InsertDataGyne from './pages/InsertDataGyne';
 import InsertDataCancer from './pages/InsertDataCancer';
@@ -38,7 +38,6 @@ const App = () => {
       .then((res) => res.json())
       .then((data) => {
         setPatients(data);
-        console.log(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -72,11 +71,8 @@ const App = () => {
 
             {/* apps  */}
             <Route path="/Patient-Search" element={<PrivateRoute><PatientSearch /></PrivateRoute>} />
-            <Route path="/editor" element={<PrivateRoute><Editor /></PrivateRoute>} />
             <Route path="/Doctor-Search" patients={patients} element={<PrivateRoute><DoctorSearch /></PrivateRoute>} />
             <Route path="/Referral-History" element={<PrivateRoute><ReferralHistory /></PrivateRoute>} />
-
-            {/* charts  */}
           </Routes>
         </div>
         <Footer />

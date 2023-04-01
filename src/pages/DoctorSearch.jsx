@@ -13,7 +13,6 @@ const DoctorSearch = () => {
   const [show, setShow] = React.useState(false);
   const selectionsettings = { persistSelection: true };
   const toolbarOptions = [];
-  const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY');
   const [doctorDisplay, setDoctorDisp] = useState();
   const { register, reset, handleSubmit, formState: { errors } } = useForm();
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, setThemeSettings } = useStateContext();
@@ -43,7 +42,7 @@ const DoctorSearch = () => {
     reset();
   };
 
-  useEffect(() => {
+  useEffect(() => { // react hook to set color
     const currentThemeColor = localStorage.getItem('colorMode');
     const currentThemeMode = localStorage.getItem('themeMode');
     if (currentThemeColor && currentThemeMode) {
@@ -52,11 +51,6 @@ const DoctorSearch = () => {
     }
   }, []);
 
-  const requestOptionsTwo = {
-    headers: {
-      'Authorization': `Bearer ${JSON.parse(token)}`,
-    },
-  };
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <div style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
@@ -147,7 +141,6 @@ const DoctorSearch = () => {
               editSettings={editing}
             >
               <ColumnsDirective>
-                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                 {employeesGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
               </ColumnsDirective>
               <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport, Selection, Toolbar]} />
