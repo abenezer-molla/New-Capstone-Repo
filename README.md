@@ -8,37 +8,37 @@ I. Setting up the Frontend
 
 Open the project in Visual Studio Code. Ensure that you are in the 'new-capstone-repo' directory. If not, execute the following command in the terminal:
 
-    - cd new-capstone-repo
+     cd new-capstone-repo
 
 Inside the 'new-capstone-repo' directory, install all dependencies and packages by running:
 
-    - npm install
+     npm install
 
 Once the installation is complete, start the development environment by executing:
 
-    - npm start
+     npm start
 
 II. Setting up the Backend
 
 Make sure you are in the 'new-capstone-repo' directory within Visual Studio Code. If not, enter the following command in the terminal:
 
-    - cd new-capstone-repo
+     cd new-capstone-repo
 
 Navigate to the 'backend' directory by running:
 
-    - cd backend
+     cd backend
 
 Activate the virtual environment by executing:
 
-    - pipenv shell
+     pipenv shell
 
 Set the Flask application environment variable by running:
 
-    - export FLASK_APP=main.py
+     export FLASK_APP=main.py
 
 Finally, start the backend server by executing:
 
-    - python main.py
+     python main.py
 
 User Story:
 
