@@ -67,6 +67,7 @@ export default function InsertDataCancer() {
 
   const [text, setText] = useState('');
   const [usernames, setUsernames] = useState([]);
+  
   const submitFormDepart = (input) => {
     fetch(`/auth/doctors/${input.department}`)
       .then((res) => res.json())

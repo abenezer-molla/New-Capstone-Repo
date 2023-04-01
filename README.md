@@ -1,14 +1,44 @@
 # New-Capstone-Repo
 
-This readMe file was inside the capstone-main folder. But I am bringing it here. 
-
 README.md
-Steps to run this WebApp.
 
-When you open it with VS-code, the default directory is new-capstone-repo. If not, run "cd new-capstone-repo" in terminal.
-now run "cd capstone-main" on teminal
-within the capstone-main directory, run "npm install" to install all the dependacies and packages.
-after that is done, run npm start. This will start the development environment.
+Running the WebApp (Frontend and Backend)
+
+I. Setting up the Frontend
+
+Open the project in Visual Studio Code. Ensure that you are in the 'new-capstone-repo' directory. If not, execute the following command in the terminal:
+
+    - cd new-capstone-repo
+
+Inside the 'new-capstone-repo' directory, install all dependencies and packages by running:
+
+    - npm install
+
+Once the installation is complete, start the development environment by executing:
+
+    - npm start
+
+II. Setting up the Backend
+
+Make sure you are in the 'new-capstone-repo' directory within Visual Studio Code. If not, enter the following command in the terminal:
+
+    - cd new-capstone-repo
+
+Navigate to the 'backend' directory by running:
+
+    - cd backend
+
+Activate the virtual environment by executing:
+
+    - pipenv shell
+
+Set the Flask application environment variable by running:
+
+    - export FLASK_APP=main.py
+
+Finally, start the backend server by executing:
+
+    - python main.py
 
 User Story:
 

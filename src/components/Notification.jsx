@@ -21,26 +21,45 @@ const Notification = () => {
       status: data.status,
       date: new Date(),
     };
-    const requestOptionsTwo = {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'Authorization': `Bearer ${JSON.parse(token)}`,
-      },
-      body: JSON.stringify(body),
-    };
 
-    fetch('/doctorStatus/doctor_status', requestOptionsTwo)
-      .then((res) => res.json())
-      // eslint-disable-next-line no-shadow
-      .then((data) => {
-        setServerResponse('Data Submitted Successfully');
-        setShow(true);
-      })
-      .catch((err) => console.log(err));
+    if (state.action === 'delete') {
+      const requestOptionsTwo = {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
+        body: JSON.stringify(body),
+      };
 
-    reset();
-    navigate('/HomePage');
+      fetch('/doctorStatus/doctor_status', requestOptionsTwo)
+        .then((res) => res.json())
+        .then((data) => {
+          setServerResponse('Data Submitted Successfully');
+          setShow(true);
+        })
+        .catch((err) => console.log(err));
+
+      reset();
+      navigate('/HomePage');
+    } else if (state.action === 'edit') {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(token)}`,
+        },
+        body: JSON.stringify(state.data),
+      };
+
+      fetch(`/doctorStatus/doctor_status/${state.data.patientid}`, requestOptions)
+        .then((res) => res.json())
+        .then((res) => state.endEdit())
+        .then((data) => {
+          console.log('DATA =', data);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
