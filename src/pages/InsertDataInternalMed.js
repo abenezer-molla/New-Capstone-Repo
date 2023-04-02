@@ -6,7 +6,7 @@ import { Form, Alert } from 'react-bootstrap';
 
 export default function InsertDataInternalMed() {
   const [show, setShow] = React.useState(false);
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
   const [serverResponse, setServerResponse] = useState('');
   const [doctorDisplay, setDoctorDisp] = useState();
   const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY');
@@ -20,7 +20,7 @@ export default function InsertDataInternalMed() {
       gender: data.gender,
       medicalnote: data.medicalnote,
       age: data.age,
-      department: 'Internal Medicine',
+      department: 'Pediatrics',
       currentdepartment: data.currentdepartment,
       status: data.status,
       diagnosisstatus: data.diagnosisstatus,
@@ -59,12 +59,6 @@ export default function InsertDataInternalMed() {
     navigate('/patients');
   };
 
-  const requestOptionsGet = {
-    headers: {
-      'Authorization': `Bearer ${JSON.parse(token)}`,
-    },
-  };
-
   const [text, setText] = useState('');
   const [usernames, setUsernames] = useState([]);
   const submitFormDepart = (input) => {
@@ -75,17 +69,20 @@ export default function InsertDataInternalMed() {
     reset();
   };
 
-  const handleChange = (event) => {
-    setText(event.target.value);
+  const handleChange = () => {
+    setText('');
   };
   const handleSelect = (username) => {
     setText(`${text}${username}`);
   };
 
+  useEffect(() => {
+    setValue('doctorusername', text);
+  }, [setValue, text]);
+
   const regex = /(\w+)/;
   const match = text.match(regex);
   const currentUsername = match ? match[1] : '';
-  console.log('username', usernames);
   const options = usernames
     .filter(({ username }) => username.startsWith(currentUsername))
     .map(({ username }) => (
@@ -290,13 +287,12 @@ export default function InsertDataInternalMed() {
             <br/>
             <UnorderedList color="green.500">
               {options.length > 0 && options.map((option) => (
-                <ListItem margin="15px"><Button onClick={handleChange}>{option}</Button></ListItem>
+                <ListItem margin="15px"><Button>{option}</Button></ListItem>
               ))}
               <ListItem><Button onClick={handleChange}>RESET</Button></ListItem>
             </UnorderedList>
             <Form.Group id="doctorusername">
               <Input
-                value={text}
                 type="doctorusername"
                 name="doctorusername"
                 {...register('doctorusername')}
